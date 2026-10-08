@@ -362,3 +362,15 @@ a.hp:focus { left: 16px; top: 8px; z-index: 50; background: var(--paper); paddin
 .flush-top { padding-top: clamp(3rem, 7vw, 5rem); }
 /* Plain sage CTA bands, so only the title band and the footer carry the waves */
 .sage { background-image: none; }
+
+/* Contato card: even rhythm, button sits with its number */
+.contact-card { gap: 1.5rem; padding: clamp(1.5rem, 3vw, 2.25rem); }
+.contact-line { gap: 0.35rem; }
+.contact-line .btn { justify-self: start; margin-top: 0.6rem; }
+.contact-grid > .stack { gap: 1rem; }
+.contact-grid > .stack > h2 { margin-top: -0.2em; }
+/* footer line stays on one line where there is room */
+.foot-quote { max-width: none; white-space: nowrap; }
+@media (max-width: 560px) { .foot-quote { white-space: normal; } }
+.foot-cols p { margin: 0; }
+.foot-name-line { color: var(--foot-fg); margin-bottom: 0.6rem !important; }
