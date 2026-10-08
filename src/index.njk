@@ -52,14 +52,16 @@ layout: base.njk
     <p class="ruled left">Reflexões</p>
     <h2>Para ler com calma</h2>
   </div>
-  <figure class="photo banner"><img src="/images/biblioteca.jpg" width="1440" height="960" alt="Biblioteca antiga com vários andares de estantes e uma claraboia" loading="lazy"></figure>
-  <div class="reflections">
-    {%- for r in collections.reflexoes %}{% if r.data.destaqueInicio %}
-    <article class="reflection"><span class="tag">{{ r.data.categoria }}</span>
-      <h3>{{ r.data.title }}</h3>
-      <p>{{ r.data.resumo }}</p>
-      <a href="{{ r.url }}">Continuar lendo</a></article>
-    {%- endif %}{% endfor %}
+  <div class="read-grid">
+    <figure class="photo library"><img src="/images/biblioteca.jpg" width="1440" height="1920" alt="Biblioteca antiga com cinco andares de estantes e uma claraboia" loading="lazy"></figure>
+    <div class="reflections stacked">
+      {%- for r in collections.reflexoes %}{% if r.data.destaqueInicio %}
+      <article class="reflection"><span class="tag">{{ r.data.categoria }}</span>
+        <h3>{{ r.data.title }}</h3>
+        <p>{{ r.data.resumo }}</p>
+        <a href="{{ r.url }}">Continuar lendo</a></article>
+      {%- endif %}{% endfor %}
+    </div>
   </div>
   <p style="margin-top:2rem"><a class="btn ghost" href="/reflexoes/">Todas as reflexões <span class="arrow" aria-hidden="true"></span></a></p>
 </div></section>

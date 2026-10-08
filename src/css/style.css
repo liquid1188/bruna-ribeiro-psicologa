@@ -321,3 +321,38 @@ a.hp:focus { left: 16px; top: 8px; z-index: 50; background: var(--paper); paddin
 .site-footer .btn:hover { background: var(--foot-fg); border-color: var(--foot-fg); }
 .foot-legal { border-top-color: var(--foot-line); color: var(--foot-muted); }
 .site-footer .desktop-toggle { color: var(--mustard); }
+
+/* ---------- Mobile pass ---------- */
+.foot-credit a { color: var(--mustard) !important; }
+.wa-bar { display: none; }
+@media (max-width: 820px) {
+  body { font-size: 1rem; }
+  section { padding-block: 3rem; }
+  .hero { padding-block: 1.5rem 2.75rem; }
+  .hero-text { gap: 1.1rem; }
+  .page-head { padding-block: 2rem 1.25rem; }
+  .split { gap: 1.75rem; }
+  .photo.tall img { aspect-ratio: 4 / 3; }
+  .photo.small img { aspect-ratio: 4 / 5; }
+  .photo.small { width: min(100%, 18rem); }
+  .signs, .steps, .reflections { margin-top: 1.75rem; gap: 1.5rem; }
+  .cta-row .btn { flex: 1 1 auto; justify-content: center; }
+  .faq summary { font-size: 1.12rem; }
+  .foot-top { flex-direction: column; align-items: flex-start; }
+  .site-footer .foot-cols { grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .site-footer .foot-cols > div:first-child { grid-column: 1 / -1; }
+  .foot-legal { flex-direction: column; }
+  /* sticky WhatsApp button on phones */
+  .wa-bar { display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; justify-content: center;
+    padding: 0.6rem 16px calc(0.6rem + env(safe-area-inset-bottom, 0px));
+    background: color-mix(in srgb, var(--linen) 94%, transparent); backdrop-filter: blur(8px);
+    border-top: 1px solid color-mix(in srgb, var(--rule) 50%, transparent); }
+  .wa-bar .btn { width: 100%; max-width: 26rem; justify-content: center; padding-block: 0.85rem; }
+  body { padding-bottom: calc(4.2rem + env(safe-area-inset-bottom, 0px)); }
+  html.force-desktop .wa-bar { display: none; }
+}
+
+.read-grid { display: grid; grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.25fr); gap: clamp(1.5rem, 4vw, 3rem); margin-top: 2.5rem; align-items: start; }
+.photo.library img { aspect-ratio: 3 / 4; }
+.reflections.stacked { grid-template-columns: 1fr; margin-top: 0; }
+@media (max-width: 820px) { .read-grid { grid-template-columns: 1fr; margin-top: 1.75rem; } .photo.library { width: min(100%, 20rem); justify-self: center; } .photo.library img { aspect-ratio: 3 / 4; } }
