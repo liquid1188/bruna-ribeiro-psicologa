@@ -107,10 +107,10 @@ async function shaOf(env, path) {
 const BOT = /bot|crawl|spider|slurp|preview|facebookexternalhit|whatsapp|headless|lighthouse/i;
 const dia = (t) => new Date(t).toISOString().slice(0, 10);
 const bump = (o, k) => { if (k) o[k] = (o[k] || 0) + 1; };
-async function countVisit(req, env) {
+async function countVisit(req, env, body) {
   const ua = req.headers.get("User-Agent") || "";
   if (BOT.test(ua)) return;
-  let d = {}; try { d = JSON.parse(await req.text()); } catch { return; }
+  let d = {}; try { d = JSON.parse(body); } catch { return; }
   const path = String(d.p || "").slice(0, 120);
   if (!path.startsWith("/") || /^\/(escrever|painel|admin)\//.test(path)) return;
   let fonte = "";
@@ -147,7 +147,7 @@ export default {
     const origin = req.headers.get("Origin") || "";
     if (req.method === "OPTIONS") return new Response(null, { headers: cors(origin) });
     if (req.method === "POST" && new URL(req.url).pathname === "/visita") {
-      if (ORIGINS.includes(origin)) ctx.waitUntil(countVisit(req, env).catch(() => {}));
+      if (ORIGINS.includes(origin)) { const body = await req.text(); ctx.waitUntil(countVisit(req, env, body).catch(() => {})); }
       return new Response(null, { status: 204, headers: cors(origin) });
     }
     if (req.method !== "POST") return reply(origin, 405, { ok: false, erro: "Método não permitido." });
