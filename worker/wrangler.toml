@@ -3,3 +3,7 @@ main = "worker.js"
 compatibility_date = "2024-09-23"
 workers_dev = true
 routes = [{ pattern = "publicar.psicologabrunaribeiro.com", custom_domain = true }]
+
+[[kv_namespaces]]
+binding = "SENHAS"
+id = "c885ec5fe69245eb9202c233567e496b"

@@ -15,17 +15,39 @@ window.Area = (function () {
   function gate(onReady) {
     var lock = document.getElementById("area-lock"), body = document.getElementById("area-body");
     var form = document.getElementById("area-login"), msg = document.getElementById("area-login-msg");
-    function open() { lock.hidden = true; body.hidden = false; onReady(); }
+    var nova = document.getElementById("area-nova"), nf = document.getElementById("area-nova-form"), nm = document.getElementById("area-nova-msg");
+    var trocando = false, aberto = false;
+    function open() { lock.hidden = true; nova.hidden = true; body.hidden = false; if (!aberto) { aberto = true; onReady(); } }
+    function pedirNova(troca) {
+      trocando = troca; lock.hidden = true; body.hidden = true; nova.hidden = false;
+      document.getElementById("area-atual-campo").hidden = !troca;
+      document.getElementById("area-nova-intro").textContent = troca ? "Trocar a sua senha." : "Bem-vinda! Agora crie a sua senha. Só você vai saber qual é.";
+      nf.nova.focus();
+    }
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       set(form.senha.value.trim()); msg.textContent = "Verificando…";
       var fd = new FormData(); fd.append("verificar", "1");
       post("/verificar", fd).then(function (j) {
-        if (j.ok) { msg.textContent = ""; open(); } else { msg.textContent = j.erro || "Senha incorreta."; }
+        if (j.ok && j.definir) { msg.textContent = ""; pedirNova(false); }
+        else if (j.ok) { msg.textContent = ""; open(); }
+        else { msg.textContent = j.erro || "Senha incorreta."; }
       }).catch(function () { msg.textContent = "Sem conexão. Tente de novo."; });
     });
+    nf.addEventListener("submit", function (e) {
+      e.preventDefault(); nm.className = "form-status";
+      if (nf.nova.value.length < 8) { nm.className = "form-status err"; nm.textContent = "A senha precisa ter pelo menos 8 caracteres."; return; }
+      if (nf.nova.value !== nf.nova2.value) { nm.className = "form-status err"; nm.textContent = "As duas senhas não são iguais."; return; }
+      if (trocando) set(nf.atual.value);
+      var fd = new FormData(); fd.append("nova", nf.nova.value);
+      post("/definir-senha", fd).then(function (j) {
+        if (j.ok) { set(nf.nova.value); nf.reset(); nm.className = "form-status ok"; nm.textContent = "Senha salva."; setTimeout(open, 700); }
+        else { nm.className = "form-status err"; nm.textContent = j.erro || "Não foi possível salvar."; }
+      }).catch(function () { nm.className = "form-status err"; nm.textContent = "Sem conexão. Tente de novo."; });
+    });
     document.querySelectorAll("[data-sair]").forEach(function (b) { b.addEventListener("click", function () { set(""); location.reload(); }); });
-    if (get()) { var fd = new FormData(); fd.append("verificar", "1"); post("/verificar", fd).then(function (j) { if (j.ok) open(); }); }
+    document.querySelectorAll("[data-trocar]").forEach(function (b) { b.addEventListener("click", function () { pedirNova(true); }); });
+    if (get()) { var fd = new FormData(); fd.append("verificar", "1"); post("/verificar", fd).then(function (j) { if (j.ok && !j.definir) open(); }); }
   }
   // Shrinks a phone photo to at most 1600px and about 85% JPEG before upload.
   function shrink(file) {

@@ -5,8 +5,18 @@
 <section class="flush-top"><div class="wrap narrow">
   <div id="area-lock" class="area-card">
     <form id="area-login" class="contact">
-      <div class="field"><label for="senha">Senha</label><input id="senha" name="senha" type="password" autocomplete="current-password" required></div>
+      <div class="field"><label for="senha">Senha <span class="hint">(no primeiro acesso, use o código que o Andrew enviou)</span></label><input id="senha" name="senha" type="password" autocomplete="current-password" required></div>
       <div class="cta-row"><button class="btn" type="submit">Entrar</button></div>
       <p class="form-status" id="area-login-msg" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+  <div id="area-nova" class="area-card" hidden>
+    <form id="area-nova-form" class="contact">
+      <p id="area-nova-intro">Crie a sua senha. Só você vai saber qual é.</p>
+      <div class="field" id="area-atual-campo" hidden><label for="atual">Senha atual</label><input id="atual" name="atual" type="password" autocomplete="current-password"></div>
+      <div class="field"><label for="nova">Nova senha <span class="hint">(pelo menos 8 caracteres)</span></label><input id="nova" name="nova" type="password" autocomplete="new-password" minlength="8" required></div>
+      <div class="field"><label for="nova2">Repita a nova senha</label><input id="nova2" name="nova2" type="password" autocomplete="new-password" minlength="8" required></div>
+      <div class="cta-row"><button class="btn" type="submit">Salvar senha</button></div>
+      <p class="form-status" id="area-nova-msg" role="status" aria-live="polite"></p>
     </form>
   </div>

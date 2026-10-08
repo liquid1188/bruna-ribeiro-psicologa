@@ -1,7 +1,9 @@
 // Publishes a new Reflexão to Bruna's site. The form at /escrever/ posts here
 // with a password; this Worker holds the GitHub key, so Bruna never needs one.
 // Also serves her visit stats at /estatisticas from Cloudflare Web Analytics.
-// Secrets (set with wrangler): EDITOR_PASSWORD, GITHUB_TOKEN, CF_ANALYTICS_TOKEN.
+// Bruna sets her own password: the first time she enters a one-time SETUP_CODE,
+// then chooses a password, stored only as a salted PBKDF2 hash in KV (SENHAS).
+// Secrets (set with wrangler): SETUP_CODE, GITHUB_TOKEN, CF_ANALYTICS_TOKEN.
 const REPO = "liquid1188/bruna-ribeiro-psicologa";
 const BRANCH = "main";
 const ORIGINS = ["https://www.psicologabrunaribeiro.com", "https://psicologabrunaribeiro.com"];
@@ -27,6 +29,23 @@ async function same(a, b) {
   let d = 0; for (let i = 0; i < u.length; i++) d |= u[i] ^ v[i];
   return d === 0;
 }
+const enc = new TextEncoder();
+const hex = (buf) => [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, "0")).join("");
+async function pbkdf2(pass, saltHex) {
+  const key = await crypto.subtle.importKey("raw", enc.encode(pass), "PBKDF2", false, ["deriveBits"]);
+  const salt = new Uint8Array(saltHex.match(/../g).map((h) => parseInt(h, 16)));
+  return hex(await crypto.subtle.deriveBits({ name: "PBKDF2", hash: "SHA-256", salt, iterations: 100000 }, key, 256));
+}
+async function checkPassword(env, senha) {
+  const rec = await env.SENHAS.get("senha", "json");
+  if (!rec || !senha) return false;
+  return same(await pbkdf2(senha, rec.salt), rec.hash);
+}
+async function setPassword(env, nova) {
+  const salt = hex(crypto.getRandomValues(new Uint8Array(16)));
+  await env.SENHAS.put("senha", JSON.stringify({ salt, hash: await pbkdf2(nova, salt), em: new Date().toISOString() }));
+}
+
 function slugify(s) {
   return s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase()
     .replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 70) || "reflexao";
@@ -89,9 +108,22 @@ export default {
     let form;
     try { form = await req.formData(); } catch { return reply(origin, 400, { ok: false, erro: "Formulário inválido." }); }
     const senha = String(form.get("senha") || "");
-    if (!env.EDITOR_PASSWORD || !(await same(senha, env.EDITOR_PASSWORD))) {
+    const path = new URL(req.url).pathname;
+    const temSenha = !!(await env.SENHAS.get("senha"));
+    const codigoOk = !temSenha && env.SETUP_CODE && senha && (await same(senha, env.SETUP_CODE));
+    const senhaOk = codigoOk ? false : await checkPassword(env, senha);
+
+    if (path === "/definir-senha") {
+      if (!codigoOk && !senhaOk) { await new Promise((r) => setTimeout(r, 800)); return reply(origin, 401, { ok: false, erro: temSenha ? "Senha atual incorreta." : "Código incorreto." }); }
+      const nova = String(form.get("nova") || "");
+      if (nova.length < 8) return reply(origin, 400, { ok: false, erro: "A nova senha precisa ter pelo menos 8 caracteres." });
+      await setPassword(env, nova);
+      return reply(origin, 200, { ok: true });
+    }
+    if (codigoOk) return reply(origin, 200, { ok: true, definir: true });
+    if (!senhaOk) {
       await new Promise((r) => setTimeout(r, 800));
-      return reply(origin, 401, { ok: false, erro: "Senha incorreta." });
+      return reply(origin, 401, { ok: false, erro: temSenha ? "Senha incorreta." : "Use o código de acesso que o Andrew enviou." });
     }
     if (form.get("verificar")) return reply(origin, 200, { ok: true });
     if (new URL(req.url).pathname === "/estatisticas") {
