@@ -83,6 +83,9 @@ collections:
           - { name: descricao, label: Descrição para o Google, widget: text }
           - { name: telefone, label: Telefone exibido }
           - { name: whatsapp, label: "WhatsApp só com números, com 55 e DDD (ex.: 5544999944411)" }
+          - { name: whatsappMensagem, label: "Mensagem que já aparece escrita ao abrir o WhatsApp", widget: text }
+          - { name: agendamentoUrl, label: "Link de agendamento online, como Calendly (opcional; se preenchido, os botões Agendar usam este link)", required: false }
+          - { name: cidade, label: "Cidade (opcional; aparece para o Google)", required: false }
           - { name: instagram, label: Link do Instagram }
           - { name: instagramHandle, label: Usuário do Instagram (sem @) }
           - { name: ePsi, label: "Link do cadastro e-Psi (opcional)", required: false }

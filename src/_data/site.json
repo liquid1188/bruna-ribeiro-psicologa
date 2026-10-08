@@ -2,7 +2,7 @@
   "nome": "Bruna Ribeiro",
   "nomeCompleto": "Bruna Ribeiro Barbosa Matosinhos",
   "crp": "CRP 08/34535",
-  "descricao": "Psicoterapia online para adultos com abordagem em Terapia Cognitivo-Comportamental. Psicóloga Bruna Ribeiro, CRP 08/34535.",
+  "descricao": "Psicóloga Bruna Ribeiro (CRP 08/34535). Psicoterapia online para adultos com Terapia Cognitivo-Comportamental (TCC). Atendimento individual e sigiloso, de onde você estiver.",
   "telefone": "(44) 99994-4411",
   "whatsapp": "5544999944411",
   "instagram": "https://instagram.com/psibruribeiro",
@@ -10,5 +10,8 @@
   "ePsi": "",
   "web3formsKey": "626ed2af-8f15-48c7-8916-901e1453479f",
   "url": "https://www.psicologabrunaribeiro.com",
-  "setupMode": true
+  "setupMode": false,
+  "whatsappMensagem": "Olá, Bruna! Vim pelo site e gostaria de saber mais sobre os atendimentos.",
+  "agendamentoUrl": "",
+  "cidade": ""
 }

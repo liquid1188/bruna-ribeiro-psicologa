@@ -1,14 +1,13 @@
 ---
 layout: base.njk
 ---
-{%- set wa = "https://wa.me/" + site.whatsapp -%}
 <section class="hero"><div class="wrap">
   <div class="hero-text">
     <p class="ruled left">{{ inicio.heroKicker }}</p>
     <h1>{{ inicio.heroTitulo }}</h1>
     <p class="lead">{{ inicio.heroTexto }}</p>
     <div class="cta-row">
-      <a class="btn" href="{{ wa }}" target="_blank" rel="noopener">Agendar pelo WhatsApp</a>
+      <a class="btn" href="{{ links.agendar }}" target="_blank" rel="noopener">Agendar pelo WhatsApp</a>
       <a class="btn ghost" href="/terapia/">Como funciona <span class="arrow" aria-hidden="true"></span></a>
     </div>
   </div>
@@ -44,7 +43,7 @@ layout: base.njk
 <section class="quote-section photo-bg" style="--bg-img:url('{{ '/images/aquario.jpg' | url }}')"><div class="wrap">
   <p class="band">{{ inicio.frase | band | safe }}</p>
   <cite>{{ site.nome }}</cite>
-  <a class="btn" href="{{ wa }}" target="_blank" rel="noopener">Quero começar</a>
+  <a class="btn" href="{{ links.agendar }}" target="_blank" rel="noopener">Quero começar</a>
 </div></section>
 
 <section><div class="wrap">

@@ -3,7 +3,6 @@ layout: base.njk
 title: Terapia
 description: Como funciona a psicoterapia online com abordagem em Terapia Cognitivo-Comportamental (TCC), do primeiro contato à primeira sessão, e perguntas frequentes.
 ---
-{%- set wa = "https://wa.me/" + site.whatsapp -%}
 <section class="page-head"><div class="wrap">
   <p class="ruled left">Terapia</p>
   <h1>Psicoterapia online para adultos</h1>
@@ -54,5 +53,5 @@ description: Como funciona a psicoterapia online com abordagem em Terapia Cognit
 
 <section class="sage quote-section"><div class="wrap">
   <p class="band">{{ terapia.fraseFinal | band | safe }}</p>
-  <a class="btn" href="{{ wa }}" target="_blank" rel="noopener">Agendar pelo WhatsApp</a>
+  <a class="btn" href="{{ links.agendar }}" target="_blank" rel="noopener">Agendar pelo WhatsApp</a>
 </div></section>
