@@ -123,7 +123,7 @@ section { padding-block: clamp(3.5rem, 8vw, 6.5rem); }
 .hero .wrap { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: clamp(2rem, 5vw, 4.5rem); align-items: center; }
 .hero-text { display: grid; gap: 1.6rem; min-width: 0; }
 .hero-portrait { position: relative; justify-self: center; width: min(100%, 26rem); }
-.hero-portrait img { width: 100%; aspect-ratio: 1; border-radius: 50%; }
+.hero-portrait img { width: 100%; aspect-ratio: 1; border-radius: 50%; object-fit: cover; object-position: 50% 30%; }
 .hero-portrait::before {
   content: ""; position: absolute; inset: -14px; border-radius: 50%; border: 1.5px solid var(--rule);
 }
