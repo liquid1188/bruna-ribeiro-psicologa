@@ -1,9 +1,9 @@
 ---
-title: "Teste do sistema"
+title: "Teste do sistema editado"
 categoria: "Teste"
 ordem: 0
 destaqueInicio: false
-resumo: "Texto de teste. Será apagado."
+resumo: "Texto editado."
 frase: ""
 ---
-Texto de teste. Será apagado.
+Texto editado.
