@@ -1,0 +1,32 @@
+{
+  "perguntas": [
+    {
+      "pergunta": "Psicoterapia cura?",
+      "resposta": "Essa é uma dúvida muito comum. Na psicoterapia, independentemente da abordagem, não falamos em cura para os transtornos mentais, mas em tratamento e remissão dos sintomas.\n\nNão falar em cura não significa que você não pode ter uma vida plena e saudável. O tratamento na terapia é sobre se conhecer, aprender novas formas de lidar com os desafios e construir uma rotina que faça sentido para você."
+    },
+    {
+      "pergunta": "E se eu chegar na terapia e não tiver o que falar?",
+      "resposta": "Muita gente acha que precisa chegar na sessão com tudo organizado. Mas nem sempre é assim. Às vezes você chega pensando “minha semana foi normal”, “não aconteceu nada”, “nem sei por que estou aqui hoje”. E, aos poucos, a conversa encontra um caminho.\n\nVocê não precisa chegar com respostas."
+    },
+    {
+      "pergunta": "Preciso estar muito mal para procurar terapia?",
+      "resposta": "Não. Fazer terapia não significa que você está mal. Terapia também é prevenção, clareza e leveza. Seu bem-estar não precisa ser deixado pro fim da lista."
+    },
+    {
+      "pergunta": "Sentir tristeza ou ansiedade quer dizer que tenho um transtorno?",
+      "resposta": "Não necessariamente. Tristeza, medo, ansiedade e insegurança fazem parte da vida e, em muitos casos, até nos ajudam a lidar com desafios. Quando a intensidade, a frequência e a duração desse sofrimento passam do esperado e causam prejuízo, pode ser um sinal de alerta.\n\nNão é porque você se identificou com um sintoma que tem um transtorno. O diagnóstico não se baseia em um único sinal, mas em critérios clínicos avaliados por um profissional."
+    },
+    {
+      "pergunta": "E se uma sessão parecer “só uma conversa”?",
+      "resposta": "Algumas sessões vão trazer reflexões importantes. Outras vão parecer apenas uma conversa, e isso não significa que elas foram menos úteis. Nem tudo o que acontece na terapia é percebido na hora. Algumas conversas continuam fazendo sentido muito depois que a sessão termina."
+    },
+    {
+      "pergunta": "O que eu conto na terapia fica entre nós?",
+      "resposta": "Sim. O atendimento é sigiloso, conforme o Código de Ética Profissional do Psicólogo."
+    },
+    {
+      "pergunta": "A terapia online serve para situações de crise?",
+      "resposta": "A psicoterapia online não substitui atendimento de urgência. Se você estiver em crise ou em risco, ligue 188 (CVV, 24 horas, gratuito) ou 192 (SAMU), ou procure o pronto-socorro mais próximo."
+    }
+  ]
+}

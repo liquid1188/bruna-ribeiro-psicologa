@@ -1,0 +1,41 @@
+---
+layout: base.njk
+title: Contato
+description: Entre em contato com a psicóloga Bruna Ribeiro pelo WhatsApp ou por e-mail para saber mais sobre a psicoterapia online.
+---
+<section class="page-head"><div class="wrap">
+  <p class="ruled left">Contato</p>
+  <h1>Vamos conversar?</h1>
+  <p class="lead">Entre em contato para saber mais sobre os atendimentos. Respondo pelo WhatsApp ou por e-mail.</p>
+</div></section>
+
+<section class="flush-top"><div class="wrap contact-grid">
+  <aside class="contact-card">
+    <div class="contact-line"><span class="label">WhatsApp</span><span class="value">{{ site.telefone }}</span></div>
+    <a class="btn" href="https://wa.me/{{ site.whatsapp }}" target="_blank" rel="noopener">Abrir conversa</a>
+    <div class="contact-line"><span class="label">Instagram</span><a class="value" href="{{ site.instagram }}" target="_blank" rel="noopener">@{{ site.instagramHandle }}</a></div>
+    <div class="contact-line"><span class="label">Atendimento</span><span>Online, para adultos, com abordagem em TCC</span></div>
+    <p class="notice">A psicoterapia online não substitui atendimento de urgência. Em situação de crise, ligue 188 (CVV, 24 horas) ou 192 (SAMU).</p>
+  </aside>
+
+  <div class="stack" id="formulario">
+    <h2>Prefere escrever um e-mail?</h2>
+    <p>Não é preciso contar detalhes sobre o que você está vivendo. Uma mensagem curta é suficiente para começarmos.</p>
+    <form class="contact" id="contact-form" novalidate>
+      <input type="hidden" name="access_key" value="{{ site.web3formsKey }}">
+      <input type="hidden" name="subject" value="Nova mensagem pelo site">
+      <input type="hidden" name="from_name" value="Site {{ site.nome }}">
+      <label class="hp" for="botcheck">Não preencha este campo</label><input class="hp" type="checkbox" name="botcheck" id="botcheck" tabindex="-1">
+      <div class="field"><label for="nome">Nome</label><input id="nome" name="nome" type="text" autocomplete="name" required></div>
+      <div class="row2">
+        <div class="field"><label for="email">E-mail</label><input id="email" name="email" type="email" autocomplete="email" required></div>
+        <div class="field"><label for="telefone">WhatsApp <span class="hint">(opcional)</span></label><input id="telefone" name="telefone" type="tel" autocomplete="tel"></div>
+      </div>
+      <div class="field"><label for="mensagem">Mensagem</label><textarea id="mensagem" name="mensagem" required placeholder="Ex.: Olá, gostaria de saber mais sobre os atendimentos online."></textarea></div>
+      <label class="consent" for="consentimento"><input id="consentimento" name="consentimento" type="checkbox" value="sim" required>
+        <span>Autorizo o uso dos meus dados apenas para que a psicóloga responda este contato, conforme a Lei Geral de Proteção de Dados (LGPD).</span></label>
+      <div class="cta-row"><button class="btn" type="submit">Enviar mensagem</button></div>
+      <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+</div></section>

@@ -1,0 +1,22 @@
+---
+layout: base.njk
+---
+<article>
+<section class="page-head"><div class="wrap narrow">
+  <p class="ruled left">{{ categoria }}</p>
+  <h1>{{ title }}</h1>
+  <p class="lead">{{ resumo }}</p>
+</div></section>
+<section class="flush-top"><div class="wrap narrow prose">
+  {% if frase %}<p class="band">{{ frase | band | safe }}</p>{% endif %}
+  {{ content | safe }}
+  <p class="back"><a href="/reflexoes/">Todas as reflexões</a></p>
+</div></section>
+</article>
+<section class="sage quote-section"><div class="wrap">
+  <h2>Se isso fez sentido pra você, podemos conversar.</h2>
+  <div class="cta-row">
+    <a class="btn" href="https://wa.me/{{ site.whatsapp }}" target="_blank" rel="noopener">Falar pelo WhatsApp</a>
+    <a class="btn ghost" href="/terapia/">Como funciona a terapia</a>
+  </div>
+</div></section>

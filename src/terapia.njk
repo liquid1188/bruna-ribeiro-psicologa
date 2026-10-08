@@ -1,0 +1,58 @@
+---
+layout: base.njk
+title: Terapia
+description: Como funciona a psicoterapia online com abordagem em Terapia Cognitivo-Comportamental (TCC), do primeiro contato à primeira sessão, e perguntas frequentes.
+---
+{%- set wa = "https://wa.me/" + site.whatsapp -%}
+<section class="page-head"><div class="wrap">
+  <p class="ruled left">Terapia</p>
+  <h1>Psicoterapia online para adultos</h1>
+  <p class="lead">{{ terapia.intro }}</p>
+</div></section>
+
+<section class="flush-top"><div class="wrap split">
+  <div class="stack">
+    <h2>{{ terapia.tccTitulo }}</h2>
+    {{ terapia.tccTexto | md | safe }}
+  </div>
+  <div class="stack">
+    <p class="band">{{ terapia.frase | band | safe }}</p>
+    {{ terapia.mudancaTexto | md | safe }}
+  </div>
+</div></section>
+
+<section class="paper"><div class="wrap">
+  <div class="stack">
+    <p class="ruled left">Como começar</p>
+    <h2>Do primeiro contato à primeira sessão</h2>
+  </div>
+  <ol class="steps">
+    {%- for p in terapia.passos %}<li><h3>{{ p.titulo }}</h3><p>{{ p.texto }}</p></li>{% endfor %}
+  </ol>
+</div></section>
+
+<section><div class="wrap split photo-left">
+  <figure class="photo tall"><img src="/images/bruna-xicara.jpg" width="1179" height="1591" alt="Bruna Ribeiro com uma xícara nas mãos, conversando com a câmera" loading="lazy"></figure>
+  <div class="stack">
+    <p class="ruled left">Atendimento online</p>
+    <h2>{{ terapia.onlineTitulo }}</h2>
+    {{ terapia.onlineTexto | md | safe }}
+  </div>
+</div></section>
+
+<section class="paper" id="perguntas"><div class="wrap">
+  <div class="stack">
+    <p class="ruled left">Dúvidas comuns</p>
+    <h2>Perguntas frequentes</h2>
+  </div>
+  <div class="faq">
+    {%- for q in faq.perguntas %}
+    <details><summary>{{ q.pergunta }}</summary><div class="a">{{ q.resposta | md | safe }}</div></details>
+    {%- endfor %}
+  </div>
+</div></section>
+
+<section class="sage quote-section"><div class="wrap">
+  <p class="band">{{ terapia.fraseFinal | band | safe }}</p>
+  <a class="btn" href="{{ wa }}" target="_blank" rel="noopener">Agendar pelo WhatsApp</a>
+</div></section>

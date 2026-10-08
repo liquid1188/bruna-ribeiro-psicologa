@@ -1,0 +1,65 @@
+{%- set wa = "https://wa.me/" + site.whatsapp -%}
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <script>try{if(sessionStorage.getItem('desktop')==='1'){document.querySelector('meta[name="viewport"]').setAttribute('content','width=1200');document.documentElement.classList.add('force-desktop')}}catch(e){}</script>
+  <title>{% if title %}{{ title }} · {{ site.nome }} Psicóloga{% else %}{{ site.nome }} · Psicóloga, Psicoterapia Online (TCC){% endif %}</title>
+  <meta name="description" content="{{ description or site.descricao }}">
+  {% if site.setupMode %}<meta name="robots" content="noindex, nofollow">{% endif %}
+  <link rel="canonical" href="{{ site.url }}{{ page.url }}">
+  <link rel="icon" href="/images/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Gentium+Book+Plus:ital,wght@0,400;0,700;1,400&family=Karla:wght@400;700&display=swap">
+  <link rel="stylesheet" href="/css/style.css?v={{ buildId }}">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:title" content="{{ title or (site.nome + ' · Psicóloga') }}">
+  <meta property="og:description" content="{{ description or site.descricao }}">
+  <meta property="og:image" content="{{ site.url }}/images/bruna-retrato.png">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Psychologist","name":"{{ site.nomeCompleto }}","description":"{{ site.descricao }}","url":"{{ site.url }}","telephone":"+{{ site.whatsapp }}","image":"{{ site.url }}/images/bruna-retrato.png","sameAs":["{{ site.instagram }}"],"areaServed":"BR","availableLanguage":"pt-BR"}</script>
+</head>
+<body>
+<a class="hp" href="#main">Pular para o conteúdo</a>
+<header class="site-header"><div class="wrap">
+  <a class="brand" href="/"><strong>{{ site.nome }}</strong><small>PSICÓLOGA · {{ site.crp }}</small></a>
+  <button class="menu-btn" aria-expanded="false" aria-controls="nav">Menu</button>
+  <nav class="nav" id="nav" aria-label="Principal">
+    {%- for item in [["/", "Início"], ["/sobre/", "Sobre"], ["/terapia/", "Terapia"], ["/reflexoes/", "Reflexões"], ["/contato/", "Contato"]] %}
+    <a href="{{ item[0] }}"{% if page.url == item[0] or (item[0] != "/" and page.url.startsWith(item[0])) %} aria-current="page"{% endif %}>{{ item[1] }}</a>
+    {%- endfor %}
+    <a class="btn" href="{{ wa }}" target="_blank" rel="noopener">Agendar</a>
+  </nav>
+</div></header>
+<main id="main">
+{{ content | safe }}
+</main>
+<footer class="site-footer"><div class="wrap">
+  <div class="foot-cols">
+    <div>
+      <span class="foot-name">Psi. {{ site.nomeCompleto }}</span>
+      <span>Psicóloga · {{ site.crp }}</span>
+      <span>Psicoterapia online para adultos · Terapia Cognitivo-Comportamental</span>
+      {% if site.ePsi %}<a href="{{ site.ePsi }}" target="_blank" rel="noopener">Cadastro e-Psi (CFP)</a>{% endif %}
+    </div>
+    <div>
+      <h4>Páginas</h4>
+      <a href="/">Início</a><a href="/sobre/">Sobre</a><a href="/terapia/">Terapia</a><a href="/reflexoes/">Reflexões</a><a href="/contato/">Contato</a>
+    </div>
+    <div>
+      <h4>Contato</h4>
+      <a href="{{ wa }}" target="_blank" rel="noopener">WhatsApp {{ site.telefone }}</a>
+      <a href="{{ site.instagram }}" target="_blank" rel="noopener">Instagram @{{ site.instagramHandle }}</a>
+      <a href="/contato/#formulario">Formulário de contato</a>
+    </div>
+  </div>
+  <div class="foot-legal">
+    <span>© <span data-year>2026</span> {{ site.nomeCompleto }} · {{ site.crp }}</span>
+    <span>Em situação de crise, ligue 188 (CVV) ou 192 (SAMU). <button class="desktop-toggle" type="button">Ver versão desktop</button></span>
+  </div>
+</div></footer>
+<script src="/js/site.js?v={{ buildId }}"></script>
+</body>
+</html>

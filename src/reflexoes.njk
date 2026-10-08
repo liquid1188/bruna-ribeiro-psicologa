@@ -1,0 +1,32 @@
+---
+layout: base.njk
+title: Reflexões
+description: Pequenas reflexões sobre terapia, mudança e o que acontece entre uma sessão e outra, por Bruna Ribeiro, psicóloga.
+---
+<section class="page-head"><div class="wrap">
+  <p class="ruled left">Reflexões</p>
+  <h1>Textos para ler com calma</h1>
+  <p class="lead">Pequenas reflexões sobre terapia, mudança e o que acontece entre uma sessão e outra.</p>
+</div></section>
+
+<section class="flush-top"><div class="wrap">
+  <div class="reflections">
+    {%- for r in collections.reflexoes %}
+    <article class="reflection{% if loop.first %} feature{% endif %}">
+      {%- if loop.first %}<div class="head">{% endif %}
+      <span class="tag">{{ r.data.categoria }}</span>
+      <h2>{{ r.data.title }}</h2>
+      {%- if loop.first %}</div><div class="body">{% endif %}
+      <p>{{ r.data.resumo }}</p>
+      {% if r.data.frase %}<p class="band">{{ r.data.frase | band | safe }}</p>{% endif %}
+      <a href="{{ r.url }}">Ler a reflexão</a>
+      {%- if loop.first %}</div>{% endif %}
+    </article>
+    {%- endfor %}
+  </div>
+</div></section>
+
+<section class="sage quote-section"><div class="wrap">
+  <p class="band"><span>Não há problema algum em procurar ajuda.</span> <span>Às vezes, o apoio certo pode ser a chave para um caminho mais leve e saudável.</span></p>
+  <a class="btn" href="/contato/">Entrar em contato</a>
+</div></section>

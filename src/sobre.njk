@@ -1,0 +1,43 @@
+---
+layout: base.njk
+title: Sobre
+---
+{%- set wa = "https://wa.me/" + site.whatsapp -%}
+<section class="page-head"><div class="wrap">
+  <p class="ruled left">Sobre</p>
+  <h1>{{ sobre.titulo }}</h1>
+</div></section>
+
+<section class="flush-top"><div class="wrap split photo-left">
+  <figure class="photo tall"><img src="/images/bruna-xicara.jpg" width="1179" height="1591" alt="Bruna Ribeiro sorrindo com uma xícara nas mãos, de blusa listrada" loading="lazy"></figure>
+  <div class="stack">
+    <p class="lead">{{ sobre.intro }}</p>
+    {{ sobre.texto | md | safe }}
+    <p class="band">{{ sobre.frase | band | safe }}</p>
+  </div>
+</div></section>
+
+{% if sobre.formacao %}
+<section class="flush-top"><div class="wrap stack">
+  <p class="ruled left">Formação</p>
+  {{ sobre.formacao | md | safe }}
+</div></section>
+{% endif %}
+
+<section class="paper"><div class="wrap split">
+  <div class="stack">
+    <p class="ruled left">Como eu trabalho</p>
+    <h2>{{ sobre.comoTitulo }}</h2>
+    {{ sobre.comoTexto | md | safe }}
+    <ul class="checks">{% for d in sobre.etiquetas %}<li>{{ d }}</li>{% endfor %}</ul>
+  </div>
+  <figure class="photo wide"><img src="/images/consultorio.jpg" width="1179" height="930" alt="Bruna Ribeiro em seu consultório, ajustando os óculos, com uma xícara de café e um notebook" loading="lazy"></figure>
+</div></section>
+
+<section class="sage quote-section"><div class="wrap">
+  <h2>Quer conversar sobre começar?</h2>
+  <div class="cta-row">
+    <a class="btn" href="{{ wa }}" target="_blank" rel="noopener">Falar pelo WhatsApp</a>
+    <a class="btn ghost" href="/contato/#formulario">Enviar um e-mail</a>
+  </div>
+</div></section>

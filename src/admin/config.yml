@@ -1,0 +1,91 @@
+backend:
+  name: github
+  repo: liquid1188/bruna-ribeiro-psicologa
+  branch: main
+media_folder: src/images
+public_folder: /images
+locale: pt
+site_url: https://bruna-ribeiro-psicologa.vercel.app
+collections:
+  - name: reflexoes
+    label: Reflexões
+    label_singular: Reflexão
+    description: "Textos da página Reflexões. Cada um vira uma página própria. Errou algo? Abra /admin/history/ para restaurar uma versão anterior."
+    folder: src/reflexoes
+    extension: md
+    format: frontmatter
+    create: true
+    slug: "{{slug}}"
+    sortable_fields: [ordem, title]
+    summary: "{{ordem}}. {{title}}"
+    fields:
+      - { name: title, label: Título }
+      - { name: categoria, label: "Categoria (ex.: Sobre começar)" }
+      - { name: ordem, label: "Ordem na lista (1 aparece primeiro)", widget: number, value_type: int, default: 10 }
+      - { name: destaqueInicio, label: Mostrar na página inicial, widget: boolean, default: false }
+      - { name: resumo, label: "Resumo (aparece na lista e abaixo do título)", widget: text }
+      - { name: frase, label: "Frase em destaque (cada linha vira uma faixa)", widget: text, required: false }
+      - { name: body, label: Texto, widget: markdown, required: false }
+
+  - name: paginas
+    label: Textos das páginas
+    files:
+      - name: inicio
+        label: Início
+        file: src/_data/inicio.json
+        fields:
+          - { name: heroKicker, label: Linha pequena acima do título }
+          - { name: heroTitulo, label: Título principal }
+          - { name: heroTexto, label: Texto abaixo do título, widget: text }
+          - { name: sinaisTitulo, label: Título dos sinais }
+          - { name: sinais, label: Sinais, widget: list, fields: [ { name: titulo, label: Título }, { name: texto, label: Texto, widget: text } ] }
+          - { name: abordagemTitulo, label: Título da abordagem }
+          - { name: abordagemTexto, label: Texto da abordagem, widget: markdown }
+          - { name: destaques, label: Destaques (selos), widget: list, field: { name: item, label: Destaque } }
+          - { name: frase, label: "Frase em destaque (cada linha vira uma faixa)", widget: text }
+      - name: sobre
+        label: Sobre
+        file: src/_data/sobre.json
+        fields:
+          - { name: titulo, label: Título }
+          - { name: intro, label: Apresentação, widget: text }
+          - { name: texto, label: Texto, widget: markdown }
+          - { name: frase, label: Frase em destaque, widget: text }
+          - { name: formacao, label: "Formação (deixe em branco para esconder a seção)", widget: markdown, required: false }
+          - { name: comoTitulo, label: Título de Como eu trabalho }
+          - { name: comoTexto, label: Texto de Como eu trabalho, widget: markdown }
+          - { name: etiquetas, label: Selos, widget: list, field: { name: item, label: Selo } }
+      - name: terapia
+        label: Terapia
+        file: src/_data/terapia.json
+        fields:
+          - { name: intro, label: Frase de abertura }
+          - { name: tccTitulo, label: Título da TCC }
+          - { name: tccTexto, label: Texto da TCC, widget: markdown }
+          - { name: frase, label: Frase em destaque, widget: text }
+          - { name: mudancaTexto, label: Texto ao lado da frase, widget: markdown }
+          - { name: passos, label: Como começar (passos), widget: list, fields: [ { name: titulo, label: Título }, { name: texto, label: Texto, widget: text } ] }
+          - { name: onlineTitulo, label: Título do atendimento online }
+          - { name: onlineTexto, label: Texto do atendimento online, widget: markdown }
+          - { name: fraseFinal, label: "Frase final (cada linha vira uma faixa)", widget: text }
+      - name: faq
+        label: Perguntas frequentes
+        file: src/_data/faq.json
+        fields:
+          - { name: perguntas, label: Perguntas, widget: list, fields: [ { name: pergunta, label: Pergunta }, { name: resposta, label: Resposta, widget: markdown } ] }
+      - name: site
+        label: Dados do site
+        file: src/_data/site.json
+        fields:
+          - { name: nome, label: Nome curto }
+          - { name: nomeCompleto, label: Nome completo }
+          - { name: crp, label: CRP }
+          - { name: descricao, label: Descrição para o Google, widget: text }
+          - { name: telefone, label: Telefone exibido }
+          - { name: whatsapp, label: "WhatsApp só com números, com 55 e DDD (ex.: 5544999944411)" }
+          - { name: instagram, label: Link do Instagram }
+          - { name: instagramHandle, label: Usuário do Instagram (sem @) }
+          - { name: ePsi, label: "Link do cadastro e-Psi (opcional)", required: false }
+          - { name: web3formsKey, label: "Chave do formulário (Web3Forms)", required: false }
+          - { name: url, label: Endereço do site }
+          - { name: setupMode, label: "Modo de preparação (esconde do Google)", widget: boolean }

@@ -1,0 +1,7 @@
+---
+permalink: /robots.txt
+eleventyExcludeFromCollections: true
+---
+User-agent: *
+{% if site.setupMode %}Disallow: /{% else %}Allow: /
+Sitemap: {{ site.url }}/sitemap.xml{% endif %}

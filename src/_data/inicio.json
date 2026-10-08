@@ -1,0 +1,28 @@
+{
+  "heroKicker": "Psicoterapia online para adultos",
+  "heroTitulo": "Na primeira sessão, você não precisa ter todas as palavras.",
+  "heroTexto": "Precisa só ter coragem de aparecer exatamente como está. Atendimento online, individual e sigiloso, com abordagem em Terapia Cognitivo-Comportamental (TCC).",
+  "sinaisTitulo": "Três sinais de que sua mente pode estar precisando de ajuda",
+  "sinais": [
+    {
+      "titulo": "Você sente que está presa no mesmo ciclo, sem conseguir sair dele.",
+      "texto": "Se os mesmos pensamentos ou emoções negativas voltam sempre, mesmo quando você tenta seguir em frente, pode ser um sinal de que precisa de ajuda para entender e mudar isso."
+    },
+    {
+      "titulo": "Coisas simples do dia a dia começaram a pesar demais.",
+      "texto": "Quando tarefas rotineiras, relações ou responsabilidades ficam difíceis demais de enfrentar, e isso não é só cansaço momentâneo, é importante olhar com atenção para o que está acontecendo."
+    },
+    {
+      "titulo": "Você evita sentimentos ou situações porque tem medo do que pode sentir ou lembrar.",
+      "texto": "Fugir do que dói é natural, mas quando essa fuga vira rotina, pode indicar que algo está bloqueando seu crescimento e bem-estar."
+    }
+  ],
+  "abordagemTitulo": "Terapia Cognitivo-Comportamental, sem ser fria ou engessada",
+  "abordagemTexto": "A TCC ajuda a compreender a relação entre pensamentos, emoções e comportamentos. Você já tentou mudar, sabia o que fazer, e acabou voltando pro mesmo lugar? A TCC ajuda a entender por que isso acontece e, principalmente, como transformar esse padrão.\n\nÉ prática, profunda e feita pra quem você é, não só pro que você sente.",
+  "destaques": [
+    "Atendimento online",
+    "Ambiente acolhedor e sigiloso",
+    "Atendimento individualizado"
+  ],
+  "frase": "Terapia também é prevenção, clareza e leveza.\nNão espere o peso ficar insuportável pra cuidar de você."
+}
