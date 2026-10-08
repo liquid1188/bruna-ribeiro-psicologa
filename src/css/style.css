@@ -440,3 +440,13 @@ body { top: 0 !important; }
 .post-acoes, .post-confirma { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; font-size: 0.9rem; }
 .post-acoes a, .post-acoes button, .post-confirma button { background: none; border: 0; padding: 0; font: inherit; color: var(--caramel-deep); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
 .post-acoes [data-apagar], .post-confirma [data-sim] { color: var(--rust); }
+
+/* hidden must win over component display rules */
+[hidden] { display: none !important; }
+/* keep menu items on one line at mid widths */
+.nav a { white-space: nowrap; }
+@media (min-width: 821px) and (max-width: 1080px) {
+  .nav { gap: 1rem; }
+  .brand small { display: none; }
+  .nav .btn { padding: 0.5rem 0.9rem; }
+}
