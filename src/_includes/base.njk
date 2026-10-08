@@ -31,8 +31,9 @@
     "telephone": "+" + site.whatsapp,
     "image": site.url + "/images/bruna-retrato.jpg",
     "sameAs": [site.instagram],
-    "areaServed": "BR",
-    "availableLanguage": "pt-BR",
+    "areaServed": ["BR", "PT", "Worldwide"],
+    "availableLanguage": ["pt-BR", "pt-PT"],
+    "knowsLanguage": "pt-BR",
     "address": { "@type": "PostalAddress", "addressLocality": site.cidade or undefined, "addressRegion": "PR", "addressCountry": "BR" },
     "hasCredential": { "@type": "EducationalOccupationalCredential", "credentialCategory": "Registro profissional", "name": site.crp, "recognizedBy": { "@type": "Organization", "name": "Conselho Regional de Psicologia da 8ª Região (Paraná)" } }
   } | dump | safe }}</script>
@@ -47,7 +48,8 @@
 <body>
 <a class="hp" href="#main">Pular para o conteúdo</a>
 <header class="site-header"><div class="wrap">
-  <a class="brand" href="/">{% include "marca.njk" %}<span class="brand-text"><strong>{{ site.nome }}</strong><small>PSICÓLOGA · {{ site.crp }}</small></span></a>
+  <a class="brand notranslate" href="/">{% include "marca.njk" %}<span class="brand-text"><strong>{{ site.nome }}</strong><small>PSICÓLOGA · {{ site.crp }}</small></span></a>
+  <div class="lang-switch notranslate" role="group" aria-label="Idioma"><button type="button" data-lang="pt" lang="pt" title="Português">PT</button><button type="button" data-lang="en" lang="en" title="English">EN</button></div>
   <button class="menu-btn" aria-expanded="false" aria-controls="nav">Menu</button>
   <nav class="nav" id="nav" aria-label="Principal">
     {%- for item in [["/", "Início"], ["/sobre/", "Sobre mim"], ["/terapia/", "Terapia"], ["/reflexoes/", "Reflexões"], ["/contato/", "Contato"]] %}
@@ -61,7 +63,7 @@
 </main>
 <footer class="site-footer"><div class="wrap">
   <div class="foot-top">
-    <div class="foot-brand">{% include "marca.njk" %}<div><strong>{{ site.nome }}</strong><span>Psicóloga · {{ site.crp }}</span></div></div>
+    <div class="foot-brand notranslate">{% include "marca.njk" %}<div><strong>{{ site.nome }}</strong><span>Psicóloga · {{ site.crp }}</span></div></div>
     <p class="foot-quote">Você não precisa atravessar isso sozinha.</p>
     <a class="btn" href="{{ links.agendar }}" target="_blank" rel="noopener">Agendar pelo WhatsApp</a>
   </div>
@@ -70,8 +72,8 @@
       <h4>Atendimento</h4>
       <p class="foot-name-line">Psi. {{ site.nomeCompleto }}</p>
       <p>Psicoterapia online para adultos.</p>
-      {% if site.cidade %}<p>{{ site.cidade }}, Paraná.</p>{% endif %}
       <p>Terapia Cognitivo-Comportamental.</p>
+      {% if site.cidade %}<p>{{ site.cidade }}, Paraná.</p>{% endif %}
       {% if site.ePsi %}<a href="{{ site.ePsi }}" target="_blank" rel="noopener">Cadastro e-Psi (CFP)</a>{% endif %}
     </div>
     <div>
@@ -89,10 +91,13 @@
     <span>© <span data-year>2026</span> {{ site.nomeCompleto }} · {{ site.crp }}</span>
     <span>Em situação de crise, ligue 188 (CVV) ou 192 (SAMU).</span>
     <span class="foot-credit">Site por <a href="https://lickitysplitweb.com" rel="noopener" target="_blank">Lickity Split Web Design</a></span>
+    <span class="foot-lang"><div class="lang-switch lang-switch--foot notranslate" role="group" aria-label="Idioma"><button type="button" data-lang="pt" lang="pt" title="Português">PT</button><button type="button" data-lang="en" lang="en" title="English">EN</button></div></span>
     <button class="desktop-toggle" type="button">Ver versão desktop</button>
   </div>
 </div></footer>
 <div class="wa-bar"><a class="btn" href="{{ links.agendar }}" target="_blank" rel="noopener">Agendar pelo WhatsApp</a></div>
+<div id="gt-el" hidden></div>
 <script src="/js/site.js?v={{ buildId }}"></script>
+<script src="/js/translate.js?v={{ buildId }}" defer></script>
 </body>
 </html>
