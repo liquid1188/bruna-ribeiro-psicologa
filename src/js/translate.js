@@ -51,6 +51,17 @@
     }
   });
 
+  // Sessions are in Portuguese only, so English visitors see that up front.
+  var main = document.getElementById("main");
+  if (main) {
+    var note = document.createElement("div");
+    note.className = "lang-note notranslate";
+    note.setAttribute("lang", "en");
+    note.innerHTML = '<div class="wrap"><strong>Sessions are offered in Portuguese only.</strong> This English version is an automatic translation, so you can read about Bruna\'s work. <button type="button" data-lang-back>Ver em português</button></div>';
+    main.insertBefore(note, main.firstChild);
+    note.querySelector("[data-lang-back]").addEventListener("click", function () { setLang("pt"); location.reload(); });
+  }
+
   window.googleTranslateElementInit = function () {
     new google.translate.TranslateElement({ pageLanguage: "pt", includedLanguages: "en", autoDisplay: false }, "gt-el");
   };
