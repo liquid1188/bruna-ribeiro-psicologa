@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <script>try{if(sessionStorage.getItem('desktop')==='1'){document.querySelector('meta[name="viewport"]').setAttribute('content','width=1200');document.documentElement.classList.add('force-desktop')}}catch(e){}</script>
-  <title>{% if title %}{{ title }} · {{ site.nome }}, Psicóloga{% else %}{{ site.nome }} · Psicóloga Online, Terapia Cognitivo-Comportamental (TCC){% endif %}</title>
+  <title>{% if title %}{{ title }} · {{ site.nome }}, Psicóloga{% else %}{{ site.nome }} · Psicóloga em Maringá (PR) e Online, Terapia Cognitivo-Comportamental{% endif %}</title>
   <meta name="description" content="{{ description or resumo or site.descricao }}">
   {% if site.setupMode %}<meta name="robots" content="noindex, nofollow">{% endif %}
   <link rel="canonical" href="{{ site.url }}{{ page.url }}">
@@ -70,6 +70,7 @@
       <h4>Atendimento</h4>
       <p class="foot-name-line">Psi. {{ site.nomeCompleto }}</p>
       <p>Psicoterapia online para adultos.</p>
+      {% if site.cidade %}<p>{{ site.cidade }}, Paraná.</p>{% endif %}
       <p>Terapia Cognitivo-Comportamental.</p>
       {% if site.ePsi %}<a href="{{ site.ePsi }}" target="_blank" rel="noopener">Cadastro e-Psi (CFP)</a>{% endif %}
     </div>

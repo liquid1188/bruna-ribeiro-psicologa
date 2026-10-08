@@ -14,7 +14,7 @@ description: Entre em contato com a psicóloga Bruna Ribeiro pelo WhatsApp ou po
     <div class="contact-line"><span class="label">WhatsApp</span><span class="value">{{ site.telefone }}</span>
       <a class="btn" href="{{ links.whatsapp }}" target="_blank" rel="noopener">Abrir conversa</a></div>
     <div class="contact-line"><span class="label">Instagram</span><a class="value" href="{{ site.instagram }}" target="_blank" rel="noopener">@{{ site.instagramHandle }}</a></div>
-    <div class="contact-line"><span class="label">Atendimento</span><span>Online, para adultos, com abordagem em TCC</span></div>
+    <div class="contact-line"><span class="label">Atendimento</span><span>Online, para adultos, com abordagem em TCC{% if site.cidade %}. {{ site.cidade }}, PR{% endif %}</span></div>
     <p class="notice">A psicoterapia online não substitui atendimento de urgência. Em situação de crise, ligue 188 (CVV, 24 horas) ou 192 (SAMU).</p>
   </aside>
 
