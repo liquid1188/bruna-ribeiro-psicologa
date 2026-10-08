@@ -1,7 +1,9 @@
 import markdownIt from "markdown-it";
+import { HtmlBasePlugin } from "@11ty/eleventy";
 const md = markdownIt({ html: true, breaks: false, typographer: true });
 
 export default function (eleventyConfig) {
+  eleventyConfig.addPlugin(HtmlBasePlugin);
   eleventyConfig.addPassthroughCopy({ "src/css": "css", "src/js": "js", "src/admin": "admin", "src/images": "images" });
   eleventyConfig.addGlobalData("buildId", () => Date.now().toString(36));
   eleventyConfig.addFilter("md", (s) => md.render(s || ""));
@@ -12,5 +14,5 @@ export default function (eleventyConfig) {
       .map((l) => `<span>${md.renderInline(l)}</span>`).join(" "));
   eleventyConfig.addCollection("reflexoes", (api) =>
     api.getFilteredByGlob("src/reflexoes/*.md").sort((a, b) => (a.data.ordem || 99) - (b.data.ordem || 99)));
-  return { dir: { input: "src", includes: "_includes", output: "_site" }, markdownTemplateEngine: false };
+  return { dir: { input: "src", includes: "_includes", output: "_site" }, markdownTemplateEngine: false, pathPrefix: process.env.PATH_PREFIX || "/" };
 }
