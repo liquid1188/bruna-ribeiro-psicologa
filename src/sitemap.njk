@@ -4,7 +4,7 @@ eleventyExcludeFromCollections: true
 ---
 <?xml version="1.0" encoding="utf-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-{%- for p in collections.all %}
-  <url><loc>{{ site.url }}{{ p.url }}</loc></url>
+{%- for p in collections.all %}{% if not p.url.startsWith("/admin") %}
+  <url><loc>{{ site.url }}{{ p.url }}</loc></url>{% endif %}
 {%- endfor %}
 </urlset>

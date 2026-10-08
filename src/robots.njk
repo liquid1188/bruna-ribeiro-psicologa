@@ -4,4 +4,5 @@ eleventyExcludeFromCollections: true
 ---
 User-agent: *
 {% if site.setupMode %}Disallow: /{% else %}Allow: /
+Disallow: /admin/
 Sitemap: {{ site.url }}/sitemap.xml{% endif %}
