@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="pt-BR">
+<html lang="pt-BR"{% if areaTitulo %} data-private class="notranslate" translate="no"{% endif %}>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -89,6 +89,7 @@
   <div class="foot-legal">
     <span>© <span data-year>2026</span> {{ site.nomeCompleto }} · {{ site.crp }}</span>
     <span>Em situação de crise, ligue 188 (CVV) ou 192 (SAMU).</span>
+    <a class="foot-area" href="/escrever/" rel="nofollow">Área da Bruna</a>
     <span class="foot-credit">Site por <a href="https://lickitysplitweb.com" rel="noopener" target="_blank">Lickity Split Web Design</a></span>
     <span class="foot-lang"><div class="lang-switch lang-switch--foot notranslate" role="group" aria-label="Idioma"><button type="button" data-lang="pt" lang="pt" title="Português">PT</button><button type="button" data-lang="en" lang="en" title="English">EN</button></div></span>
     <button class="desktop-toggle" type="button">Ver versão desktop</button>
