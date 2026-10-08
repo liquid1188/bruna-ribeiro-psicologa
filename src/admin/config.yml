@@ -5,7 +5,7 @@ backend:
 media_folder: src/images
 public_folder: /images
 locale: pt
-site_url: https://bruna-ribeiro-psicologa.vercel.app
+site_url: https://www.psicologabrunaribeiro.com
 collections:
   - name: reflexoes
     label: Reflexões
