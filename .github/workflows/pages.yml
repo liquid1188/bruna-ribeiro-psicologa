@@ -1,4 +1,4 @@
-name: Deploy staging to GitHub Pages
+name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
@@ -21,8 +21,6 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npx @11ty/eleventy
-        env:
-          PATH_PREFIX: /bruna-ribeiro-psicologa/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site

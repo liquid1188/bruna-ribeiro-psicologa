@@ -4,7 +4,7 @@ const md = markdownIt({ html: true, breaks: false, typographer: true });
 
 export default function (eleventyConfig) {
   eleventyConfig.addPlugin(HtmlBasePlugin);
-  eleventyConfig.addPassthroughCopy({ "src/css": "css", "src/js": "js", "src/admin": "admin", "src/images": "images" });
+  eleventyConfig.addPassthroughCopy({ "src/CNAME": "CNAME", "src/css": "css", "src/js": "js", "src/admin": "admin", "src/images": "images" });
   eleventyConfig.addGlobalData("buildId", () => Date.now().toString(36));
   eleventyConfig.addFilter("md", (s) => md.render(s || ""));
   eleventyConfig.addFilter("mdInline", (s) => md.renderInline(s || ""));

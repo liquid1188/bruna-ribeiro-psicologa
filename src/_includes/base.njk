@@ -24,7 +24,7 @@
 <body>
 <a class="hp" href="#main">Pular para o conteúdo</a>
 <header class="site-header"><div class="wrap">
-  <a class="brand" href="/"><strong>{{ site.nome }}</strong><small>PSICÓLOGA · {{ site.crp }}</small></a>
+  <a class="brand" href="/">{% include "marca.njk" %}<span class="brand-text"><strong>{{ site.nome }}</strong><small>PSICÓLOGA · {{ site.crp }}</small></span></a>
   <button class="menu-btn" aria-expanded="false" aria-controls="nav">Menu</button>
   <nav class="nav" id="nav" aria-label="Principal">
     {%- for item in [["/", "Início"], ["/sobre/", "Sobre"], ["/terapia/", "Terapia"], ["/reflexoes/", "Reflexões"], ["/contato/", "Contato"]] %}
@@ -37,11 +37,17 @@
 {{ content | safe }}
 </main>
 <footer class="site-footer"><div class="wrap">
+  <div class="foot-top">
+    <div class="foot-brand">{% include "marca.njk" %}<div><strong>{{ site.nome }}</strong><span>Psicóloga · {{ site.crp }}</span></div></div>
+    <p class="foot-quote">Você não precisa atravessar isso sozinha.</p>
+    <a class="btn" href="{{ wa }}" target="_blank" rel="noopener">Agendar pelo WhatsApp</a>
+  </div>
   <div class="foot-cols">
     <div>
-      <span class="foot-name">Psi. {{ site.nomeCompleto }}</span>
-      <span>Psicóloga · {{ site.crp }}</span>
-      <span>Psicoterapia online para adultos · Terapia Cognitivo-Comportamental</span>
+      <h4>Atendimento</h4>
+      <span>Psi. {{ site.nomeCompleto }}</span>
+      <span>Psicoterapia online para adultos</span>
+      <span>Terapia Cognitivo-Comportamental</span>
       {% if site.ePsi %}<a href="{{ site.ePsi }}" target="_blank" rel="noopener">Cadastro e-Psi (CFP)</a>{% endif %}
     </div>
     <div>
@@ -52,7 +58,7 @@
       <h4>Contato</h4>
       <a href="{{ wa }}" target="_blank" rel="noopener">WhatsApp {{ site.telefone }}</a>
       <a href="{{ site.instagram }}" target="_blank" rel="noopener">Instagram @{{ site.instagramHandle }}</a>
-      <a href="/contato/#formulario">Formulário de contato</a>
+      <a href="/contato/#formulario">Enviar um e-mail</a>
     </div>
   </div>
   <div class="foot-legal">

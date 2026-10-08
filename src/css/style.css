@@ -258,3 +258,66 @@ html.force-desktop .desktop-toggle { display: inline; }
 .stack > p, .stack > ul { margin: 0; }
 .faq .a p { margin: 0; }
 a.hp:focus { left: 16px; top: 8px; z-index: 50; background: var(--paper); padding: 0.5rem 0.9rem; border-radius: 999px; }
+
+.photo.small { justify-self: center; width: min(100%, 24rem); }
+.photo.banner { margin: 2.5rem 0 0; }
+.photo.banner img { aspect-ratio: 21 / 8; object-position: 50% 30%; }
+@media (max-width: 820px) { .photo.banner img { aspect-ratio: 16 / 9; } }
+.photo-bg { position: relative; background: var(--ink) var(--bg-img) center / cover no-repeat; isolation: isolate; }
+.photo-bg::before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(30,27,24,.55), rgba(30,27,24,.15)); z-index: -1; }
+.photo-bg cite { color: #F7F4F0; }
+.photo-bg .band span { background: var(--paper); }
+
+
+/* ---------- Mark, Copacabana wallpaper, color pops, footer (Oct 2026) ---------- */
+:root {
+  --rust: #B5562E; --mustard: #D69A2D; --sage-deep: #5F7350;
+  --petal: #C98A3D; --seed-bg: #5A3A28; --seed: #E8C88A;
+  --foot-bg: #2F2520; --foot-fg: #EFE6DC; --foot-muted: #BFAE9F; --foot-line: rgba(239,230,220,.16);
+  --waves: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='48' viewBox='0 0 96 48'%3E%3Cpath fill-opacity='0.09' d='M0.0 -12.0 L4.0 -10.2 L8.0 -8.5 L12.0 -7.1 L16.0 -5.9 L20.0 -5.2 L24.0 -5.0 L28.0 -5.2 L32.0 -5.9 L36.0 -7.1 L40.0 -8.5 L44.0 -10.2 L48.0 -12.0 L52.0 -13.8 L56.0 -15.5 L60.0 -16.9 L64.0 -18.1 L68.0 -18.8 L72.0 -19.0 L76.0 -18.8 L80.0 -18.1 L84.0 -16.9 L88.0 -15.5 L92.0 -13.8 L96.0 -12.0 L96.0 -3.0 L92.0 -4.8 L88.0 -6.5 L84.0 -7.9 L80.0 -9.1 L76.0 -9.8 L72.0 -10.0 L68.0 -9.8 L64.0 -9.1 L60.0 -7.9 L56.0 -6.5 L52.0 -4.8 L48.0 -3.0 L44.0 -1.2 L40.0 0.5 L36.0 1.9 L32.0 3.1 L28.0 3.8 L24.0 4.0 L20.0 3.8 L16.0 3.1 L12.0 1.9 L8.0 0.5 L4.0 -1.2 L0.0 -3.0Z M0.0 12.0 L4.0 13.8 L8.0 15.5 L12.0 16.9 L16.0 18.1 L20.0 18.8 L24.0 19.0 L28.0 18.8 L32.0 18.1 L36.0 16.9 L40.0 15.5 L44.0 13.8 L48.0 12.0 L52.0 10.2 L56.0 8.5 L60.0 7.1 L64.0 5.9 L68.0 5.2 L72.0 5.0 L76.0 5.2 L80.0 5.9 L84.0 7.1 L88.0 8.5 L92.0 10.2 L96.0 12.0 L96.0 21.0 L92.0 19.2 L88.0 17.5 L84.0 16.1 L80.0 14.9 L76.0 14.2 L72.0 14.0 L68.0 14.2 L64.0 14.9 L60.0 16.1 L56.0 17.5 L52.0 19.2 L48.0 21.0 L44.0 22.8 L40.0 24.5 L36.0 25.9 L32.0 27.1 L28.0 27.8 L24.0 28.0 L20.0 27.8 L16.0 27.1 L12.0 25.9 L8.0 24.5 L4.0 22.8 L0.0 21.0Z M0.0 36.0 L4.0 37.8 L8.0 39.5 L12.0 40.9 L16.0 42.1 L20.0 42.8 L24.0 43.0 L28.0 42.8 L32.0 42.1 L36.0 40.9 L40.0 39.5 L44.0 37.8 L48.0 36.0 L52.0 34.2 L56.0 32.5 L60.0 31.1 L64.0 29.9 L68.0 29.2 L72.0 29.0 L76.0 29.2 L80.0 29.9 L84.0 31.1 L88.0 32.5 L92.0 34.2 L96.0 36.0 L96.0 45.0 L92.0 43.2 L88.0 41.5 L84.0 40.1 L80.0 38.9 L76.0 38.2 L72.0 38.0 L68.0 38.2 L64.0 38.9 L60.0 40.1 L56.0 41.5 L52.0 43.2 L48.0 45.0 L44.0 46.8 L40.0 48.5 L36.0 49.9 L32.0 51.1 L28.0 51.8 L24.0 52.0 L20.0 51.8 L16.0 51.1 L12.0 49.9 L8.0 48.5 L4.0 46.8 L0.0 45.0Z' fill='%23A47C5E'/%3E%3C/svg%3E");
+  --waves-foot: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='48' viewBox='0 0 96 48'%3E%3Cpath fill-opacity='0.08' d='M0.0 -12.0 L4.0 -10.2 L8.0 -8.5 L12.0 -7.1 L16.0 -5.9 L20.0 -5.2 L24.0 -5.0 L28.0 -5.2 L32.0 -5.9 L36.0 -7.1 L40.0 -8.5 L44.0 -10.2 L48.0 -12.0 L52.0 -13.8 L56.0 -15.5 L60.0 -16.9 L64.0 -18.1 L68.0 -18.8 L72.0 -19.0 L76.0 -18.8 L80.0 -18.1 L84.0 -16.9 L88.0 -15.5 L92.0 -13.8 L96.0 -12.0 L96.0 -3.0 L92.0 -4.8 L88.0 -6.5 L84.0 -7.9 L80.0 -9.1 L76.0 -9.8 L72.0 -10.0 L68.0 -9.8 L64.0 -9.1 L60.0 -7.9 L56.0 -6.5 L52.0 -4.8 L48.0 -3.0 L44.0 -1.2 L40.0 0.5 L36.0 1.9 L32.0 3.1 L28.0 3.8 L24.0 4.0 L20.0 3.8 L16.0 3.1 L12.0 1.9 L8.0 0.5 L4.0 -1.2 L0.0 -3.0Z M0.0 12.0 L4.0 13.8 L8.0 15.5 L12.0 16.9 L16.0 18.1 L20.0 18.8 L24.0 19.0 L28.0 18.8 L32.0 18.1 L36.0 16.9 L40.0 15.5 L44.0 13.8 L48.0 12.0 L52.0 10.2 L56.0 8.5 L60.0 7.1 L64.0 5.9 L68.0 5.2 L72.0 5.0 L76.0 5.2 L80.0 5.9 L84.0 7.1 L88.0 8.5 L92.0 10.2 L96.0 12.0 L96.0 21.0 L92.0 19.2 L88.0 17.5 L84.0 16.1 L80.0 14.9 L76.0 14.2 L72.0 14.0 L68.0 14.2 L64.0 14.9 L60.0 16.1 L56.0 17.5 L52.0 19.2 L48.0 21.0 L44.0 22.8 L40.0 24.5 L36.0 25.9 L32.0 27.1 L28.0 27.8 L24.0 28.0 L20.0 27.8 L16.0 27.1 L12.0 25.9 L8.0 24.5 L4.0 22.8 L0.0 21.0Z M0.0 36.0 L4.0 37.8 L8.0 39.5 L12.0 40.9 L16.0 42.1 L20.0 42.8 L24.0 43.0 L28.0 42.8 L32.0 42.1 L36.0 40.9 L40.0 39.5 L44.0 37.8 L48.0 36.0 L52.0 34.2 L56.0 32.5 L60.0 31.1 L64.0 29.9 L68.0 29.2 L72.0 29.0 L76.0 29.2 L80.0 29.9 L84.0 31.1 L88.0 32.5 L92.0 34.2 L96.0 36.0 L96.0 45.0 L92.0 43.2 L88.0 41.5 L84.0 40.1 L80.0 38.9 L76.0 38.2 L72.0 38.0 L68.0 38.2 L64.0 38.9 L60.0 40.1 L56.0 41.5 L52.0 43.2 L48.0 45.0 L44.0 46.8 L40.0 48.5 L36.0 49.9 L32.0 51.1 L28.0 51.8 L24.0 52.0 L20.0 51.8 L16.0 51.1 L12.0 49.9 L8.0 48.5 L4.0 46.8 L0.0 45.0Z' fill='%23E2BC9C'/%3E%3C/svg%3E");
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --rust: #E08A62; --mustard: #E9B85A; --sage-deep: #A9B898; --foot-bg: #161210; --waves: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='48' viewBox='0 0 96 48'%3E%3Cpath fill-opacity='0.08' d='M0.0 -12.0 L4.0 -10.2 L8.0 -8.5 L12.0 -7.1 L16.0 -5.9 L20.0 -5.2 L24.0 -5.0 L28.0 -5.2 L32.0 -5.9 L36.0 -7.1 L40.0 -8.5 L44.0 -10.2 L48.0 -12.0 L52.0 -13.8 L56.0 -15.5 L60.0 -16.9 L64.0 -18.1 L68.0 -18.8 L72.0 -19.0 L76.0 -18.8 L80.0 -18.1 L84.0 -16.9 L88.0 -15.5 L92.0 -13.8 L96.0 -12.0 L96.0 -3.0 L92.0 -4.8 L88.0 -6.5 L84.0 -7.9 L80.0 -9.1 L76.0 -9.8 L72.0 -10.0 L68.0 -9.8 L64.0 -9.1 L60.0 -7.9 L56.0 -6.5 L52.0 -4.8 L48.0 -3.0 L44.0 -1.2 L40.0 0.5 L36.0 1.9 L32.0 3.1 L28.0 3.8 L24.0 4.0 L20.0 3.8 L16.0 3.1 L12.0 1.9 L8.0 0.5 L4.0 -1.2 L0.0 -3.0Z M0.0 12.0 L4.0 13.8 L8.0 15.5 L12.0 16.9 L16.0 18.1 L20.0 18.8 L24.0 19.0 L28.0 18.8 L32.0 18.1 L36.0 16.9 L40.0 15.5 L44.0 13.8 L48.0 12.0 L52.0 10.2 L56.0 8.5 L60.0 7.1 L64.0 5.9 L68.0 5.2 L72.0 5.0 L76.0 5.2 L80.0 5.9 L84.0 7.1 L88.0 8.5 L92.0 10.2 L96.0 12.0 L96.0 21.0 L92.0 19.2 L88.0 17.5 L84.0 16.1 L80.0 14.9 L76.0 14.2 L72.0 14.0 L68.0 14.2 L64.0 14.9 L60.0 16.1 L56.0 17.5 L52.0 19.2 L48.0 21.0 L44.0 22.8 L40.0 24.5 L36.0 25.9 L32.0 27.1 L28.0 27.8 L24.0 28.0 L20.0 27.8 L16.0 27.1 L12.0 25.9 L8.0 24.5 L4.0 22.8 L0.0 21.0Z M0.0 36.0 L4.0 37.8 L8.0 39.5 L12.0 40.9 L16.0 42.1 L20.0 42.8 L24.0 43.0 L28.0 42.8 L32.0 42.1 L36.0 40.9 L40.0 39.5 L44.0 37.8 L48.0 36.0 L52.0 34.2 L56.0 32.5 L60.0 31.1 L64.0 29.9 L68.0 29.2 L72.0 29.0 L76.0 29.2 L80.0 29.9 L84.0 31.1 L88.0 32.5 L92.0 34.2 L96.0 36.0 L96.0 45.0 L92.0 43.2 L88.0 41.5 L84.0 40.1 L80.0 38.9 L76.0 38.2 L72.0 38.0 L68.0 38.2 L64.0 38.9 L60.0 40.1 L56.0 41.5 L52.0 43.2 L48.0 45.0 L44.0 46.8 L40.0 48.5 L36.0 49.9 L32.0 51.1 L28.0 51.8 L24.0 52.0 L20.0 51.8 L16.0 51.1 L12.0 49.9 L8.0 48.5 L4.0 46.8 L0.0 45.0Z' fill='%23E2BC9C'/%3E%3C/svg%3E"); } }
+:root[data-theme="dark"] { --rust: #E08A62; --mustard: #E9B85A; --sage-deep: #A9B898; --foot-bg: #161210; --waves: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='48' viewBox='0 0 96 48'%3E%3Cpath fill-opacity='0.08' d='M0.0 -12.0 L4.0 -10.2 L8.0 -8.5 L12.0 -7.1 L16.0 -5.9 L20.0 -5.2 L24.0 -5.0 L28.0 -5.2 L32.0 -5.9 L36.0 -7.1 L40.0 -8.5 L44.0 -10.2 L48.0 -12.0 L52.0 -13.8 L56.0 -15.5 L60.0 -16.9 L64.0 -18.1 L68.0 -18.8 L72.0 -19.0 L76.0 -18.8 L80.0 -18.1 L84.0 -16.9 L88.0 -15.5 L92.0 -13.8 L96.0 -12.0 L96.0 -3.0 L92.0 -4.8 L88.0 -6.5 L84.0 -7.9 L80.0 -9.1 L76.0 -9.8 L72.0 -10.0 L68.0 -9.8 L64.0 -9.1 L60.0 -7.9 L56.0 -6.5 L52.0 -4.8 L48.0 -3.0 L44.0 -1.2 L40.0 0.5 L36.0 1.9 L32.0 3.1 L28.0 3.8 L24.0 4.0 L20.0 3.8 L16.0 3.1 L12.0 1.9 L8.0 0.5 L4.0 -1.2 L0.0 -3.0Z M0.0 12.0 L4.0 13.8 L8.0 15.5 L12.0 16.9 L16.0 18.1 L20.0 18.8 L24.0 19.0 L28.0 18.8 L32.0 18.1 L36.0 16.9 L40.0 15.5 L44.0 13.8 L48.0 12.0 L52.0 10.2 L56.0 8.5 L60.0 7.1 L64.0 5.9 L68.0 5.2 L72.0 5.0 L76.0 5.2 L80.0 5.9 L84.0 7.1 L88.0 8.5 L92.0 10.2 L96.0 12.0 L96.0 21.0 L92.0 19.2 L88.0 17.5 L84.0 16.1 L80.0 14.9 L76.0 14.2 L72.0 14.0 L68.0 14.2 L64.0 14.9 L60.0 16.1 L56.0 17.5 L52.0 19.2 L48.0 21.0 L44.0 22.8 L40.0 24.5 L36.0 25.9 L32.0 27.1 L28.0 27.8 L24.0 28.0 L20.0 27.8 L16.0 27.1 L12.0 25.9 L8.0 24.5 L4.0 22.8 L0.0 21.0Z M0.0 36.0 L4.0 37.8 L8.0 39.5 L12.0 40.9 L16.0 42.1 L20.0 42.8 L24.0 43.0 L28.0 42.8 L32.0 42.1 L36.0 40.9 L40.0 39.5 L44.0 37.8 L48.0 36.0 L52.0 34.2 L56.0 32.5 L60.0 31.1 L64.0 29.9 L68.0 29.2 L72.0 29.0 L76.0 29.2 L80.0 29.9 L84.0 31.1 L88.0 32.5 L92.0 34.2 L96.0 36.0 L96.0 45.0 L92.0 43.2 L88.0 41.5 L84.0 40.1 L80.0 38.9 L76.0 38.2 L72.0 38.0 L68.0 38.2 L64.0 38.9 L60.0 40.1 L56.0 41.5 L52.0 43.2 L48.0 45.0 L44.0 46.8 L40.0 48.5 L36.0 49.9 L32.0 51.1 L28.0 51.8 L24.0 52.0 L20.0 51.8 L16.0 51.1 L12.0 49.9 L8.0 48.5 L4.0 46.8 L0.0 45.0Z' fill='%23E2BC9C'/%3E%3C/svg%3E"); }
+
+.marca { width: 2.6rem; height: 2.6rem; flex: none; }
+.brand { display: flex; align-items: center; gap: 0.7rem; }
+.brand-text { display: grid; line-height: 1.15; }
+
+/* wallpaper on page titles and the hero */
+.hero, .page-head { background-image: var(--waves); background-size: 96px 48px; }
+
+/* pops of color */
+.ruled { color: var(--rust); }
+.ruled::before { background: var(--mustard); }
+.sign .n { color: var(--rust); }
+.sign { border-top-color: var(--mustard); }
+.reflection .tag, .contact-line .label, .steps li::before { color: var(--sage-deep); }
+.reflection { border-top: 3px solid var(--sage); }
+.reflection:nth-child(3n+2) { border-top-color: var(--mustard); }
+.reflection:nth-child(3n) { border-top-color: var(--rust); }
+.checks li { background: var(--sage-soft); border-color: transparent; }
+.faq summary::after { color: var(--rust); }
+.btn.ghost:hover { border-color: var(--rust); color: var(--rust); background: transparent; }
+.hero-portrait::before { border-color: var(--mustard); border-style: dashed; }
+.photo-bg cite { color: var(--mustard); }
+.sage { background-color: var(--sage-soft); background-image: var(--waves); background-size: 96px 48px; }
+
+/* footer */
+.site-footer { background: var(--foot-bg) var(--waves-foot); background-size: 96px 48px; color: var(--foot-muted); border-top: 4px solid var(--mustard); padding-block: 3.5rem 2rem; }
+.site-footer a { color: var(--foot-fg); }
+.site-footer a:hover { color: var(--mustard); }
+.foot-top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--foot-line); }
+.foot-brand { display: flex; align-items: center; gap: 1rem; }
+.foot-brand .marca { width: 3.6rem; height: 3.6rem; }
+.foot-brand strong { display: block; font-family: var(--display); font-weight: 400; font-size: 1.7rem; color: var(--foot-fg); line-height: 1.1; }
+.foot-brand span { font-size: 0.85rem; letter-spacing: .06em; }
+.foot-quote { font-family: var(--quote); font-style: italic; font-size: 1.15rem; color: var(--foot-fg); max-width: 30ch; }
+.site-footer .foot-cols { padding-block: 2rem; }
+.foot-cols h4 { color: var(--mustard); }
+.foot-cols a { color: var(--foot-fg); }
+.site-footer .btn { background: var(--mustard); border-color: var(--mustard); color: #2F2520; }
+.site-footer .btn:hover { background: var(--foot-fg); border-color: var(--foot-fg); }
+.foot-legal { border-top-color: var(--foot-line); color: var(--foot-muted); }
+.site-footer .desktop-toggle { color: var(--mustard); }

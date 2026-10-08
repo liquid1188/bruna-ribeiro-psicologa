@@ -38,10 +38,10 @@ layout: base.njk
     <ul class="checks">{% for d in inicio.destaques %}<li>{{ d }}</li>{% endfor %}</ul>
     <p><a href="/terapia/">Entenda como funciona a terapia</a></p>
   </div>
-  <figure class="photo tall"><img src="/images/bruna-jeans.jpg" width="1179" height="1451" alt="Bruna Ribeiro falando para a câmera, com a mão no queixo, em seu consultório" loading="lazy"></figure>
+  <figure class="photo tall"><img src="/images/livros-tcc.jpg" width="768" height="1024" alt="Mão de Bruna Ribeiro sobre os livros Terapia Cognitivo-Comportamental, de Judith Beck, e o DSM-5-TR" loading="lazy"></figure>
 </div></section>
 
-<section class="sage quote-section"><div class="wrap">
+<section class="quote-section photo-bg" style="--bg-img:url('{{ '/images/aquario.jpg' | url }}')"><div class="wrap">
   <p class="band">{{ inicio.frase | band | safe }}</p>
   <cite>{{ site.nome }}</cite>
   <a class="btn" href="{{ wa }}" target="_blank" rel="noopener">Quero começar</a>
@@ -52,6 +52,7 @@ layout: base.njk
     <p class="ruled left">Reflexões</p>
     <h2>Para ler com calma</h2>
   </div>
+  <figure class="photo banner"><img src="/images/biblioteca.jpg" width="1440" height="960" alt="Biblioteca antiga com vários andares de estantes e uma claraboia" loading="lazy"></figure>
   <div class="reflections">
     {%- for r in collections.reflexoes %}{% if r.data.destaqueInicio %}
     <article class="reflection"><span class="tag">{{ r.data.categoria }}</span>
