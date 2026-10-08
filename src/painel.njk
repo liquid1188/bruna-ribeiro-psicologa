@@ -1,0 +1,66 @@
+---
+layout: base.njk
+title: Visitas do site
+noindex: true
+permalink: /painel/
+eleventyExcludeFromCollections: true
+areaTitulo: Visitas do site
+---
+{% include "area-lock.njk" %}
+  <div id="area-body" hidden>
+    <p class="area-nav"><a href="/escrever/">Publicar uma reflexão</a> · <button type="button" data-sair>Sair</button></p>
+    <div class="periodo" role="group" aria-label="Período">
+      <button type="button" data-dias="7">7 dias</button><button type="button" data-dias="30" aria-pressed="true">30 dias</button><button type="button" data-dias="90">90 dias</button>
+    </div>
+    <p class="form-status" id="st-msg" role="status" aria-live="polite">Carregando…</p>
+    <div id="st" hidden>
+      <div class="kpis"><div><span class="k-num" id="k-visitas">0</span><span class="k-lab">visitas</span></div><div><span class="k-num" id="k-views">0</span><span class="k-lab">páginas vistas</span></div></div>
+      <div class="chart" id="chart" aria-label="Visitas por dia"></div>
+      <div class="tabelas">
+        <div><h3>Páginas mais vistas</h3><ol id="t-paginas"></ol></div>
+        <div><h3>Países</h3><ol id="t-paises"></ol></div>
+        <div><h3>De onde vieram</h3><ol id="t-origens"></ol></div>
+        <div><h3>Aparelhos</h3><ol id="t-aparelhos"></ol></div>
+      </div>
+      <p class="notice">Contagem sem cookies, feita pelo Cloudflare. Robôs não entram na conta. Os números do dia aparecem com alguns minutos de atraso.</p>
+    </div>
+  </div>
+</div></section>
+<script src="/js/area.js?v={{ buildId }}"></script>
+<script>
+(function () {
+  var nomes = { "/": "Início", "/sobre/": "Sobre mim", "/terapia/": "Terapia", "/reflexoes/": "Reflexões", "/contato/": "Contato" };
+  var apar = { desktop: "Computador", mobile: "Celular", tablet: "Tablet" };
+  function lista(id, rows, label) {
+    var ol = document.getElementById(id); ol.innerHTML = "";
+    if (!rows.length) { ol.innerHTML = "<li>Ainda sem dados</li>"; return; }
+    rows.forEach(function (r) { var li = document.createElement("li"); li.innerHTML = "<span></span><b></b>"; li.firstChild.textContent = label(r.nome); li.lastChild.textContent = r.visualizacoes.toLocaleString("pt-BR"); ol.appendChild(li); });
+  }
+  function grafico(dias) {
+    var el = document.getElementById("chart"); el.innerHTML = "";
+    var max = Math.max(1, ...dias.map(function (d) { return d.visitas; }));
+    dias.forEach(function (d) { var b = document.createElement("span"); b.style.height = (d.visitas / max * 100) + "%"; b.title = d.nome.split("-").reverse().join("/") + ": " + d.visitas + " visitas"; el.appendChild(b); });
+  }
+  function carregar(n) {
+    var m = document.getElementById("st-msg"); m.className = "form-status"; m.textContent = "Carregando…";
+    var fd = new FormData(); fd.append("dias", n);
+    Area.post("/estatisticas", fd).then(function (j) {
+      if (!j.ok) { m.className = "form-status err"; m.textContent = j.erro || "Não foi possível carregar."; return; }
+      m.textContent = ""; document.getElementById("st").hidden = false;
+      document.getElementById("k-visitas").textContent = j.total.visitas.toLocaleString("pt-BR");
+      document.getElementById("k-views").textContent = j.total.visualizacoes.toLocaleString("pt-BR");
+      grafico(j.porDia);
+      lista("t-paginas", j.paginas, function (p) { return nomes[p] || p.replace(/^\/reflexoes\//, "Reflexão: ").replace(/\/$/, "").replace(/-/g, " "); });
+      lista("t-paises", j.paises, function (x) { return x || "Desconhecido"; });
+      lista("t-origens", j.origens, function (x) { return x ? x.replace(/^www\./, "") : "Acesso direto ou WhatsApp"; });
+      lista("t-aparelhos", j.aparelhos, function (x) { return apar[x] || x; });
+    }).catch(function () { m.className = "form-status err"; m.textContent = "Sem conexão. Tente de novo."; });
+  }
+  Area.gate(function () {
+    document.querySelectorAll("[data-dias]").forEach(function (b) {
+      b.addEventListener("click", function () { document.querySelectorAll("[data-dias]").forEach(function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); }); carregar(b.getAttribute("data-dias")); });
+    });
+    carregar(30);
+  });
+})();
+</script>

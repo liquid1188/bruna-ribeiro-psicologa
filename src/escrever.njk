@@ -1,0 +1,45 @@
+---
+layout: base.njk
+title: Nova reflexão
+noindex: true
+permalink: /escrever/
+eleventyExcludeFromCollections: true
+areaTitulo: Publicar uma nova reflexão
+---
+{% include "area-lock.njk" %}
+  <div id="area-body" hidden>
+    <p class="area-nav"><a href="/painel/">Ver visitas do site</a> · <button type="button" data-sair>Sair</button></p>
+    <form id="pub" class="contact" novalidate>
+      <div class="field"><label for="title">Título</label><input id="title" name="title" required></div>
+      <div class="field"><label for="categoria">Categoria <span class="hint">(ex.: Sobre começar, Sobre mudança, Saúde mental)</span></label><input id="categoria" name="categoria" value="Reflexão"></div>
+      <div class="field"><label for="resumo">Resumo <span class="hint">(uma ou duas frases que aparecem na lista; se ficar vazio, uso o começo do texto)</span></label><textarea id="resumo" name="resumo" rows="2" style="min-height:4.5rem"></textarea></div>
+      <div class="field"><label for="texto">Texto</label><textarea id="texto" name="texto" required style="min-height:14rem" placeholder="Deixe uma linha em branco entre os parágrafos. Use **duas estrelas** para negrito."></textarea></div>
+      <div class="field"><label for="frase">Frase em destaque <span class="hint">(opcional; cada linha vira uma faixa)</span></label><textarea id="frase" name="frase" rows="2" style="min-height:4.5rem"></textarea></div>
+      <div class="field"><label for="foto">Foto <span class="hint">(opcional)</span></label><input id="foto" name="foto" type="file" accept="image/*"></div>
+      <div class="field"><label for="fotoAlt">Descrição da foto <span class="hint">(opcional, para leitores de tela)</span></label><input id="fotoAlt" name="fotoAlt"></div>
+      <label class="consent" for="destaque"><input id="destaque" name="destaque" type="checkbox" value="sim"><span>Mostrar também na página inicial</span></label>
+      <div class="cta-row"><button class="btn" type="submit">Publicar</button></div>
+      <p class="form-status" id="pub-msg" role="status" aria-live="polite"></p>
+    </form>
+    <p class="notice">Depois de publicar, o site leva cerca de um minuto para mostrar o novo texto. Para editar ou apagar uma reflexão já publicada, fale com o Andrew.</p>
+  </div>
+</div></section>
+<script src="/js/area.js?v={{ buildId }}"></script>
+<script>
+Area.gate(function () {
+  var f = document.getElementById("pub"), m = document.getElementById("pub-msg");
+  f.addEventListener("submit", async function (e) {
+    e.preventDefault(); m.className = "form-status";
+    if (!f.title.value.trim() || !f.texto.value.trim()) { m.className = "form-status err"; m.textContent = "Preencha pelo menos o título e o texto."; return; }
+    var b = f.querySelector("button[type=submit]"); b.disabled = true; b.textContent = "Publicando…";
+    var fd = new FormData(f); fd.delete("foto");
+    var foto = await Area.shrink(f.foto.files[0]); if (foto) fd.append("foto", foto);
+    if (!f.destaque.checked) fd.delete("destaque");
+    Area.post("/publicar", fd).then(function (j) {
+      if (j.ok) { f.reset(); m.className = "form-status ok"; m.innerHTML = 'Publicado! Em cerca de um minuto o texto estará em <a href="' + j.url + '">' + location.host + j.url + '</a>.'; }
+      else { m.className = "form-status err"; m.textContent = j.erro || "Não foi possível publicar."; }
+    }).catch(function () { m.className = "form-status err"; m.textContent = "Sem conexão. Seu texto continua aqui; tente de novo."; })
+      .finally(function () { b.disabled = false; b.textContent = "Publicar"; });
+  });
+});
+</script>

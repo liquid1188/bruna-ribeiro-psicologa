@@ -6,7 +6,7 @@
   <script>try{if(sessionStorage.getItem('desktop')==='1'){document.querySelector('meta[name="viewport"]').setAttribute('content','width=1200');document.documentElement.classList.add('force-desktop')}}catch(e){}</script>
   <title>{% if title %}{{ title }} · {{ site.nome }}, Psicóloga{% else %}{{ site.nome }} · Psicóloga em Maringá (PR) e Online, Terapia Cognitivo-Comportamental{% endif %}</title>
   <meta name="description" content="{{ description or resumo or site.descricao }}">
-  {% if site.setupMode %}<meta name="robots" content="noindex, nofollow">{% endif %}
+  {% if site.setupMode or noindex %}<meta name="robots" content="noindex, nofollow">{% endif %}
   <link rel="canonical" href="{{ site.url }}{{ page.url }}">
   <link rel="icon" href="/images/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -45,7 +45,7 @@
   <script type="application/ld+json">{{ { "@context": "https://schema.org", "@type": "BlogPosting", "headline": title, "description": resumo, "inLanguage": "pt-BR", "url": site.url + page.url, "author": { "@type": "Person", "name": site.nomeCompleto, "jobTitle": "Psicóloga" }, "publisher": { "@type": "Person", "name": site.nomeCompleto } } | dump | safe }}</script>
   {%- endif %}
 </head>
-<body>
+<body data-api="{{ site.apiUrl }}">
 <a class="hp" href="#main">Pular para o conteúdo</a>
 <header class="site-header"><div class="wrap">
   <a class="brand notranslate" href="/">{% include "marca.njk" %}<span class="brand-text"><strong>{{ site.nome }}</strong><small>PSICÓLOGA · {{ site.crp }}</small></span></a>

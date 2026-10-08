@@ -12,5 +12,6 @@
   "setupMode": false,
   "whatsappMensagem": "Olá, Bruna! Vim pelo site e gostaria de saber mais sobre os atendimentos.",
   "agendamentoUrl": "",
-  "cidade": "Maringá"
+  "cidade": "Maringá",
+  "apiUrl": "https://publicar.psicologabrunaribeiro.com"
 }

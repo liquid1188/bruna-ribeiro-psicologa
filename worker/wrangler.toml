@@ -1,0 +1,5 @@
+name = "bruna-reflexoes"
+main = "worker.js"
+compatibility_date = "2024-09-23"
+workers_dev = true
+routes = [{ pattern = "publicar.psicologabrunaribeiro.com", custom_domain = true }]
