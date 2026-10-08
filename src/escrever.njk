@@ -4,42 +4,96 @@ title: Nova reflexão
 noindex: true
 permalink: /escrever/
 eleventyExcludeFromCollections: true
-areaTitulo: Publicar uma nova reflexão
+areaTitulo: Suas reflexões
 ---
 {% include "area-lock.njk" %}
   <div id="area-body" hidden>
     <p class="area-nav"><a href="/painel/">Ver visitas do site</a> · <button type="button" data-trocar>Trocar senha</button> · <button type="button" data-sair>Sair</button></p>
+
+    <h2 id="form-titulo" class="area-h2">Nova reflexão</h2>
     <form id="pub" class="contact" novalidate>
+      <input type="hidden" name="slug" id="slug">
       <div class="field"><label for="title">Título</label><input id="title" name="title" required></div>
       <div class="field"><label for="categoria">Categoria <span class="hint">(ex.: Sobre começar, Sobre mudança, Saúde mental)</span></label><input id="categoria" name="categoria" value="Reflexão"></div>
       <div class="field"><label for="resumo">Resumo <span class="hint">(uma ou duas frases que aparecem na lista; se ficar vazio, uso o começo do texto)</span></label><textarea id="resumo" name="resumo" rows="2" style="min-height:4.5rem"></textarea></div>
       <div class="field"><label for="texto">Texto</label><textarea id="texto" name="texto" required style="min-height:14rem" placeholder="Deixe uma linha em branco entre os parágrafos. Use **duas estrelas** para negrito."></textarea></div>
       <div class="field"><label for="frase">Frase em destaque <span class="hint">(opcional; cada linha vira uma faixa)</span></label><textarea id="frase" name="frase" rows="2" style="min-height:4.5rem"></textarea></div>
-      <div class="field"><label for="foto">Foto <span class="hint">(opcional)</span></label><input id="foto" name="foto" type="file" accept="image/*"></div>
+      <div class="field"><label for="foto">Foto <span class="hint" id="foto-hint">(opcional)</span></label><input id="foto" name="foto" type="file" accept="image/*"></div>
+      <label class="consent" for="removerFoto" id="remover-wrap" hidden><input id="removerFoto" name="removerFoto" type="checkbox" value="sim"><span>Remover a foto atual</span></label>
       <div class="field"><label for="fotoAlt">Descrição da foto <span class="hint">(opcional, para leitores de tela)</span></label><input id="fotoAlt" name="fotoAlt"></div>
       <label class="consent" for="destaque"><input id="destaque" name="destaque" type="checkbox" value="sim"><span>Mostrar também na página inicial</span></label>
-      <div class="cta-row"><button class="btn" type="submit">Publicar</button></div>
+      <div class="cta-row"><button class="btn" type="submit" id="pub-btn">Publicar</button><button class="btn ghost" type="button" id="cancelar" hidden>Cancelar edição</button></div>
       <p class="form-status" id="pub-msg" role="status" aria-live="polite"></p>
     </form>
-    <p class="notice">Depois de publicar, o site leva cerca de um minuto para mostrar o novo texto. Para editar ou apagar uma reflexão já publicada, fale com o Andrew.</p>
+
+    <h2 class="area-h2">Suas reflexões</h2>
+    <p class="form-status" id="lista-msg">Carregando…</p>
+    <ul class="posts" id="posts"></ul>
+    <p class="notice">Depois de publicar, editar ou apagar, o site leva cerca de um minuto para mostrar a mudança.</p>
   </div>
 </div></section>
 <script src="/js/area.js?v={{ buildId }}"></script>
 <script>
 Area.gate(function () {
-  var f = document.getElementById("pub"), m = document.getElementById("pub-msg");
+  var f = document.getElementById("pub"), m = document.getElementById("pub-msg"), btn = document.getElementById("pub-btn");
+  var ul = document.getElementById("posts"), lm = document.getElementById("lista-msg");
+  function esc(t) { var d = document.createElement("div"); d.textContent = t; return d.innerHTML; }
+  function modoNovo() {
+    f.reset(); f.slug.value = ""; document.getElementById("form-titulo").textContent = "Nova reflexão";
+    btn.textContent = "Publicar"; document.getElementById("cancelar").hidden = true;
+    document.getElementById("remover-wrap").hidden = true; document.getElementById("foto-hint").textContent = "(opcional)";
+  }
+  function listar() {
+    lm.textContent = "Carregando…"; lm.className = "form-status";
+    Area.post("/listar", new FormData()).then(function (j) {
+      if (!j.ok) { lm.className = "form-status err"; lm.textContent = j.erro || "Não foi possível carregar."; return; }
+      lm.textContent = j.posts.length ? "" : "Nenhuma reflexão ainda."; ul.innerHTML = "";
+      j.posts.forEach(function (p) {
+        var li = document.createElement("li");
+        li.innerHTML = '<div class="post-info"><strong>' + esc(p.title) + '</strong><span>' + esc(p.categoria) + (p.destaque ? ' · na página inicial' : '') + (p.foto ? ' · com foto' : '') + '</span></div>' +
+          '<div class="post-acoes"><a href="/reflexoes/' + p.slug + '/" target="_blank" rel="noopener">Ver</a><button type="button" data-editar>Editar</button><button type="button" data-apagar>Apagar</button></div>' +
+          '<div class="post-confirma" hidden>Apagar esta reflexão de vez? <button type="button" data-sim>Sim, apagar</button><button type="button" data-nao>Não</button></div>';
+        li.querySelector("[data-editar]").onclick = function () { editar(p.slug); };
+        var conf = li.querySelector(".post-confirma");
+        li.querySelector("[data-apagar]").onclick = function () { conf.hidden = false; };
+        li.querySelector("[data-nao]").onclick = function () { conf.hidden = true; };
+        li.querySelector("[data-sim]").onclick = function () {
+          conf.textContent = "Apagando…"; var fd = new FormData(); fd.append("slug", p.slug);
+          Area.post("/apagar", fd).then(function (r) { if (r.ok) { li.remove(); if (f.slug.value === p.slug) modoNovo(); } else { conf.textContent = r.erro || "Não foi possível apagar."; } });
+        };
+        ul.appendChild(li);
+      });
+    }).catch(function () { lm.className = "form-status err"; lm.textContent = "Sem conexão."; });
+  }
+  function editar(slug) {
+    m.className = "form-status"; m.textContent = "Abrindo…";
+    var fd = new FormData(); fd.append("slug", slug);
+    Area.post("/obter", fd).then(function (p) {
+      if (!p.ok) { m.className = "form-status err"; m.textContent = p.erro || "Não foi possível abrir."; return; }
+      f.reset(); f.slug.value = p.slug; f.title.value = p.title || ""; f.categoria.value = p.categoria || "";
+      f.resumo.value = p.resumo || ""; f.texto.value = p.texto || ""; f.frase.value = p.frase || ""; f.fotoAlt.value = p.imagemAlt || "";
+      f.destaque.checked = !!p.destaqueInicio;
+      document.getElementById("remover-wrap").hidden = !p.imagem;
+      document.getElementById("foto-hint").textContent = p.imagem ? "(escolha outra para trocar a atual)" : "(opcional)";
+      document.getElementById("form-titulo").textContent = "Editando: " + (p.title || "");
+      btn.textContent = "Salvar alterações"; document.getElementById("cancelar").hidden = false; m.textContent = "";
+      document.getElementById("form-titulo").scrollIntoView({ behavior: "smooth" });
+    });
+  }
+  document.getElementById("cancelar").onclick = modoNovo;
   f.addEventListener("submit", async function (e) {
     e.preventDefault(); m.className = "form-status";
     if (!f.title.value.trim() || !f.texto.value.trim()) { m.className = "form-status err"; m.textContent = "Preencha pelo menos o título e o texto."; return; }
-    var b = f.querySelector("button[type=submit]"); b.disabled = true; b.textContent = "Publicando…";
+    var editando = !!f.slug.value; btn.disabled = true; btn.textContent = editando ? "Salvando…" : "Publicando…";
     var fd = new FormData(f); fd.delete("foto");
     var foto = await Area.shrink(f.foto.files[0]); if (foto) fd.append("foto", foto);
-    if (!f.destaque.checked) fd.delete("destaque");
+    if (!f.destaque.checked) fd.delete("destaque"); if (!f.removerFoto.checked) fd.delete("removerFoto"); if (!editando) fd.delete("slug");
     Area.post("/publicar", fd).then(function (j) {
-      if (j.ok) { f.reset(); m.className = "form-status ok"; m.innerHTML = 'Publicado! Em cerca de um minuto o texto estará em <a href="' + j.url + '">' + location.host + j.url + '</a>.'; }
-      else { m.className = "form-status err"; m.textContent = j.erro || "Não foi possível publicar."; }
-    }).catch(function () { m.className = "form-status err"; m.textContent = "Sem conexão. Seu texto continua aqui; tente de novo."; })
-      .finally(function () { b.disabled = false; b.textContent = "Publicar"; });
+      if (j.ok) { modoNovo(); m.className = "form-status ok"; m.innerHTML = (editando ? "Alterações salvas!" : "Publicado!") + ' Em cerca de um minuto estará em <a href="' + j.url + '">' + location.host + j.url + '</a>.'; listar(); }
+      else { m.className = "form-status err"; m.textContent = j.erro || "Não foi possível salvar."; btn.textContent = editando ? "Salvar alterações" : "Publicar"; }
+    }).catch(function () { m.className = "form-status err"; m.textContent = "Sem conexão. Seu texto continua aqui; tente de novo."; btn.textContent = editando ? "Salvar alterações" : "Publicar"; })
+      .finally(function () { btn.disabled = false; });
   });
+  listar();
 });
 </script>

@@ -68,12 +68,39 @@ async function exists(env, path) {
   const r = await gh(env, `contents/${path}?ref=${BRANCH}`);
   return r.status === 200;
 }
-async function put(env, path, contentB64, message) {
+async function put(env, path, contentB64, message, sha) {
   const r = await gh(env, `contents/${path}`, {
     method: "PUT",
-    body: JSON.stringify({ message, content: contentB64, branch: BRANCH, committer: { name: "Bruna Ribeiro (site)", email: "psicologabrunaribeiro@gmail.com" } }),
+    body: JSON.stringify({ message, content: contentB64, branch: BRANCH, ...(sha ? { sha } : {}), committer: { name: "Bruna Ribeiro (site)", email: "psicologabrunaribeiro@gmail.com" } }),
   });
   if (!r.ok) throw new Error(`GitHub ${r.status}`);
+}
+
+function unb64(b) { const bin = atob(b.replace(/\n/g, "")); return new TextDecoder().decode(Uint8Array.from(bin, (c) => c.charCodeAt(0))); }
+function parsePost(text) {
+  const m = text.match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/);
+  const data = {};
+  if (!m) return { data, body: text };
+  m[1].split("\n").forEach((line) => {
+    const i = line.indexOf(":"); if (i < 0) return;
+    const k = line.slice(0, i).trim(), v = line.slice(i + 1).trim();
+    try { data[k] = JSON.parse(v); } catch { data[k] = v.replace(/^["']|["']$/g, ""); }
+  });
+  return { data, body: m[2].replace(/\n$/, "") };
+}
+function validSlug(slug) { return /^[a-z0-9-]{1,80}$/.test(slug); }
+async function readPost(env, slug) {
+  const r = await gh(env, `contents/src/reflexoes/${slug}.md?ref=${BRANCH}`);
+  if (!r.ok) return null;
+  const j = await r.json();
+  return { sha: j.sha, ...parsePost(unb64(j.content)) };
+}
+async function del(env, path, sha, message) {
+  const r = await gh(env, `contents/${path}`, { method: "DELETE", body: JSON.stringify({ message, sha, branch: BRANCH, committer: { name: "Bruna Ribeiro (site)", email: "psicologabrunaribeiro@gmail.com" } }) });
+  if (!r.ok && r.status !== 404) throw new Error(`GitHub ${r.status}`);
+}
+async function shaOf(env, path) {
+  const r = await gh(env, `contents/${path}?ref=${BRANCH}`); return r.ok ? (await r.json()).sha : null;
 }
 
 async function stats(env, days) {
@@ -126,6 +153,39 @@ export default {
       return reply(origin, 401, { ok: false, erro: temSenha ? "Senha incorreta." : "Use o código de acesso que o Andrew enviou." });
     }
     if (form.get("verificar")) return reply(origin, 200, { ok: true });
+
+    if (path === "/listar") {
+      const r = await gh(env, `contents/src/reflexoes?ref=${BRANCH}`);
+      if (!r.ok) return reply(origin, 502, { ok: false, erro: "Não foi possível carregar a lista." });
+      const files = (await r.json()).filter((f) => f.name.endsWith(".md"));
+      const posts = await Promise.all(files.map(async (f) => {
+        const p = await readPost(env, f.name.replace(/\.md$/, "")); const data = p ? p.data : {};
+        return { slug: f.name.replace(/\.md$/, ""), title: data.title || f.name, categoria: data.categoria || "", ordem: Number(data.ordem ?? 99), destaque: !!data.destaqueInicio, foto: !!data.imagem };
+      }));
+      posts.sort((a, b) => a.ordem - b.ordem);
+      return reply(origin, 200, { ok: true, posts });
+    }
+    if (path === "/obter") {
+      const slug = String(form.get("slug") || "");
+      if (!validSlug(slug)) return reply(origin, 400, { ok: false, erro: "Reflexão inválida." });
+      const p = await readPost(env, slug);
+      if (!p) return reply(origin, 404, { ok: false, erro: "Reflexão não encontrada." });
+      return reply(origin, 200, { ok: true, slug, ...p.data, texto: p.body });
+    }
+    if (path === "/apagar") {
+      const slug = String(form.get("slug") || "");
+      if (!validSlug(slug)) return reply(origin, 400, { ok: false, erro: "Reflexão inválida." });
+      const p = await readPost(env, slug);
+      if (!p) return reply(origin, 404, { ok: false, erro: "Reflexão não encontrada." });
+      try {
+        await del(env, `src/reflexoes/${slug}.md`, p.sha, `Reflexão apagada: ${p.data.title || slug}`);
+        if (p.data.imagem && String(p.data.imagem).startsWith("/images/reflexoes/")) {
+          const ip = "src" + p.data.imagem; const isha = await shaOf(env, ip);
+          if (isha) await del(env, ip, isha, `Foto apagada: ${p.data.title || slug}`);
+        }
+        return reply(origin, 200, { ok: true });
+      } catch (e) { return reply(origin, 502, { ok: false, erro: "Não foi possível apagar agora. Tente de novo." }); }
+    }
     if (new URL(req.url).pathname === "/estatisticas") {
       const d = Math.min(Math.max(parseInt(form.get("dias") || "30", 10) || 30, 1), 90);
       try { return reply(origin, 200, { ok: true, ...(await stats(env, d)) }); }
@@ -141,35 +201,49 @@ export default {
     const destaque = form.get("destaque") === "sim";
 
     try {
-      // New posts go to the top of the list.
-      const list = await gh(env, `contents/src/reflexoes?ref=${BRANCH}`);
-      let ordem = 1;
-      if (list.ok) {
-        const files = (await list.json()).filter((f) => f.name.endsWith(".md"));
-        const nums = await Promise.all(files.map(async (f) => {
-          const t = await (await fetch(f.download_url)).text();
-          const m = t.match(/^ordem:\s*(-?\d+)/m); return m ? Number(m[1]) : 99;
-        }));
-        ordem = Math.min(1, ...nums) - 1;
+      const editSlug = String(form.get("slug") || "");
+      let slug, ordem, sha = null, old = null;
+      if (editSlug) {
+        if (!validSlug(editSlug)) return reply(origin, 400, { ok: false, erro: "Reflexão inválida." });
+        old = await readPost(env, editSlug);
+        if (!old) return reply(origin, 404, { ok: false, erro: "Essa reflexão não existe mais." });
+        slug = editSlug; sha = old.sha; ordem = Number(old.data.ordem ?? 1);
+      } else {
+        // New posts go to the top of the list.
+        const list = await gh(env, `contents/src/reflexoes?ref=${BRANCH}`);
+        ordem = 1;
+        if (list.ok) {
+          const files = (await list.json()).filter((f) => f.name.endsWith(".md"));
+          const nums = await Promise.all(files.map(async (f) => {
+            const t = await (await fetch(f.download_url)).text();
+            const m = t.match(/^ordem:\s*(-?\d+)/m); return m ? Number(m[1]) : 99;
+          }));
+          ordem = Math.min(1, ...nums) - 1;
+        }
+        slug = slugify(title); let n = 2;
+        while (await exists(env, `src/reflexoes/${slug}.md`)) slug = `${slugify(title)}-${n++}`;
       }
 
-      let slug = slugify(title), n = 2;
-      while (await exists(env, `src/reflexoes/${slug}.md`)) slug = `${slugify(title)}-${n++}`;
-
-      let imagem = "";
+      let imagem = old && !form.get("removerFoto") ? String(old.data.imagem || "") : "";
+      let imagemAlt = String(form.get("fotoAlt") || (old ? old.data.imagemAlt || "" : "")).trim();
+      if (old && form.get("removerFoto") && old.data.imagem && String(old.data.imagem).startsWith("/images/reflexoes/")) {
+        const ip = "src" + old.data.imagem; const isha = await shaOf(env, ip);
+        if (isha) await del(env, ip, isha, `Foto removida: ${title}`);
+      }
       const foto = form.get("foto");
       if (foto && typeof foto === "object" && foto.size > 0) {
         if (foto.size > MAX_PHOTO) return reply(origin, 400, { ok: false, erro: "A foto é grande demais. Tente uma foto menor." });
         const ext = (foto.type.split("/")[1] || "jpg").replace("jpeg", "jpg").replace(/[^a-z0-9]/g, "");
-        const path = `src/images/reflexoes/${slug}.${ext}`;
-        await put(env, path, b64(new Uint8Array(await foto.arrayBuffer())), `Foto da reflexão: ${title}`);
-        imagem = `/images/reflexoes/${slug}.${ext}`;
+        const ipath = `src/images/reflexoes/${slug}-${Date.now().toString(36)}.${ext}`;
+        await put(env, ipath, b64(new Uint8Array(await foto.arrayBuffer())), `Foto da reflexão: ${title}`);
+        if (imagem && imagem.startsWith("/images/reflexoes/")) { const isha = await shaOf(env, "src" + imagem); if (isha) await del(env, "src" + imagem, isha, `Foto trocada: ${title}`); }
+        imagem = ipath.replace(/^src/, "");
       }
 
       const fm = { title, categoria, ordem, destaqueInicio: destaque, resumo, frase };
-      if (imagem) { fm.imagem = imagem; fm.imagemAlt = String(form.get("fotoAlt") || "").trim(); }
+      if (imagem) { fm.imagem = imagem; fm.imagemAlt = imagemAlt; }
       const md = "---\n" + Object.entries(fm).map(([k, v]) => `${k}: ${JSON.stringify(v)}`).join("\n") + "\n---\n" + texto.replace(/\r\n/g, "\n") + "\n";
-      await put(env, `src/reflexoes/${slug}.md`, b64text(md), `Nova reflexão: ${title}`);
+      await put(env, `src/reflexoes/${slug}.md`, b64text(md), `${old ? "Reflexão editada" : "Nova reflexão"}: ${title}`, sha);
 
       return reply(origin, 200, { ok: true, url: `/reflexoes/${slug}/` });
     } catch (e) {

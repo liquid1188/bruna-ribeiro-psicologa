@@ -431,3 +431,12 @@ body { top: 0 !important; }
 .tabelas li span { min-width: 0; overflow-wrap: anywhere; }
 .tabelas li b { font-variant-numeric: tabular-nums; color: var(--ink); }
 @media (max-width: 640px) { .tabelas { grid-template-columns: 1fr; } }
+
+.area-h2 { font-size: 1.6rem; margin: 2rem 0 1rem; }
+.posts { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.6rem; }
+.posts li { background: var(--paper); border-radius: var(--radius); padding: 0.9rem 1.1rem; display: grid; gap: 0.5rem; }
+.post-info { display: grid; gap: 0.15rem; }
+.post-info span { font-size: 0.85rem; color: var(--muted); }
+.post-acoes, .post-confirma { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; font-size: 0.9rem; }
+.post-acoes a, .post-acoes button, .post-confirma button { background: none; border: 0; padding: 0; font: inherit; color: var(--caramel-deep); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.post-acoes [data-apagar], .post-confirma [data-sim] { color: var(--rust); }
