@@ -2,8 +2,16 @@ backend:
   name: github
   repo: liquid1188/bruna-ribeiro-psicologa
   branch: main
-media_folder: src/images
-public_folder: /images
+media_folder: src/images/reflexoes
+public_folder: /images/reflexoes
+media_libraries:
+  all:
+    transformations:
+      raster_image:
+        format: webp
+        quality: 85
+        width: 1600
+        height: 1600
 locale: pt
 site_url: https://www.psicologabrunaribeiro.com
 collections:
@@ -24,5 +32,7 @@ collections:
       - { name: ordem, label: "Ordem na lista (1 aparece primeiro)", widget: number, value_type: int, default: 10 }
       - { name: destaqueInicio, label: Mostrar na página inicial, widget: boolean, default: false }
       - { name: resumo, label: "Resumo (aparece na lista e abaixo do título)", widget: text }
+      - { name: imagem, label: "Foto (opcional)", widget: image, required: false }
+      - { name: imagemAlt, label: "Descrição da foto, para leitores de tela (opcional)", required: false }
       - { name: frase, label: "Frase em destaque (cada linha vira uma faixa)", widget: text, required: false }
       - { name: body, label: Texto, widget: markdown, required: false }

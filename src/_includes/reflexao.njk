@@ -8,6 +8,7 @@ layout: base.njk
   <p class="lead">{{ resumo }}</p>
 </div></section>
 <section class="flush-top"><div class="wrap narrow prose">
+  {% if imagem %}<figure class="photo post-photo"><img src="{{ imagem }}" alt="{{ imagemAlt or '' }}" loading="lazy"></figure>{% endif %}
   {% if frase %}<p class="band">{{ frase | band | safe }}</p>{% endif %}
   {{ content | safe }}
   <p class="back"><a href="/reflexoes/">Todas as reflexões</a></p>

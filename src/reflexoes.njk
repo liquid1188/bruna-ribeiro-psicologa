@@ -15,7 +15,8 @@ description: Reflexões da psicóloga Bruna Ribeiro sobre terapia, ansiedade, mu
 <section class="flush-top"><div class="wrap">
   <div class="reflections">
     {%- for r in collections.reflexoes %}
-    <article class="reflection{% if loop.first %} feature{% endif %}">
+    <article class="reflection{% if loop.first %} feature{% endif %}{% if r.data.imagem %} has-photo{% endif %}">
+      {%- if r.data.imagem and not loop.first %}<a class="ref-photo" href="{{ r.url }}" tabindex="-1" aria-hidden="true"><img src="{{ r.data.imagem }}" alt="" loading="lazy"></a>{% endif %}
       {%- if loop.first %}<div class="head">{% endif %}
       <span class="tag">{{ r.data.categoria }}</span>
       <h2>{{ r.data.title }}</h2>
