@@ -50,7 +50,7 @@
   <a class="brand" href="/">{% include "marca.njk" %}<span class="brand-text"><strong>{{ site.nome }}</strong><small>PSICÓLOGA · {{ site.crp }}</small></span></a>
   <button class="menu-btn" aria-expanded="false" aria-controls="nav">Menu</button>
   <nav class="nav" id="nav" aria-label="Principal">
-    {%- for item in [["/", "Início"], ["/sobre/", "Sobre"], ["/terapia/", "Terapia"], ["/reflexoes/", "Reflexões"], ["/contato/", "Contato"]] %}
+    {%- for item in [["/", "Início"], ["/sobre/", "Sobre mim"], ["/terapia/", "Terapia"], ["/reflexoes/", "Reflexões"], ["/contato/", "Contato"]] %}
     <a href="{{ item[0] }}"{% if page.url == item[0] or (item[0] != "/" and page.url.startsWith(item[0])) %} aria-current="page"{% endif %}>{{ item[1] }}</a>
     {%- endfor %}
     <a class="btn" href="{{ links.agendar }}" target="_blank" rel="noopener">Agendar</a>
@@ -75,7 +75,7 @@
     </div>
     <div>
       <h4>Páginas</h4>
-      <a href="/">Início</a><a href="/sobre/">Sobre</a><a href="/terapia/">Terapia</a><a href="/reflexoes/">Reflexões</a><a href="/contato/">Contato</a>
+      <a href="/">Início</a><a href="/sobre/">Sobre mim</a><a href="/terapia/">Terapia</a><a href="/reflexoes/">Reflexões</a><a href="/contato/">Contato</a>
     </div>
     <div>
       <h4>Contato</h4>
