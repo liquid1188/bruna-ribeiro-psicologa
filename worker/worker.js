@@ -1,14 +1,12 @@
 // Publishes a new Reflexão to Bruna's site. The form at /escrever/ posts here
 // with a password; this Worker holds the GitHub key, so Bruna never needs one.
-// Also serves her visit stats at /estatisticas from Cloudflare Web Analytics.
+// Also counts visits (/visita) and serves them to her at /estatisticas.
 // Bruna sets her own password: the first time she enters a one-time SETUP_CODE,
 // then chooses a password, stored only as a salted PBKDF2 hash in KV (SENHAS).
-// Secrets (set with wrangler): SETUP_CODE, GITHUB_TOKEN, CF_ANALYTICS_TOKEN.
+// Secrets (set with wrangler): SETUP_CODE, GITHUB_TOKEN.
 const REPO = "liquid1188/bruna-ribeiro-psicologa";
 const BRANCH = "main";
 const ORIGINS = ["https://www.psicologabrunaribeiro.com", "https://psicologabrunaribeiro.com"];
-const ACCOUNT = "adb544ec9a3ae90fcc9badce066c96ec";
-const SITE_TAG = "38184fbd464f4db1b6551426acef9400";
 const MAX_PHOTO = 4 * 1024 * 1024;
 
 function cors(origin) {
@@ -103,33 +101,55 @@ async function shaOf(env, path) {
   const r = await gh(env, `contents/${path}?ref=${BRANCH}`); return r.ok ? (await r.json()).sha : null;
 }
 
+// Visits are counted here, not by Cloudflare: the site pings /visita on each
+// page view and the Worker keeps one small tally per day in KV. No cookies,
+// no IP addresses, nothing personal is stored.
+const BOT = /bot|crawl|spider|slurp|preview|facebookexternalhit|whatsapp|headless|lighthouse/i;
+const dia = (t) => new Date(t).toISOString().slice(0, 10);
+const bump = (o, k) => { if (k) o[k] = (o[k] || 0) + 1; };
+async function countVisit(req, env) {
+  const ua = req.headers.get("User-Agent") || "";
+  if (BOT.test(ua)) return;
+  let d = {}; try { d = JSON.parse(await req.text()); } catch { return; }
+  const path = String(d.p || "").slice(0, 120);
+  if (!path.startsWith("/") || /^\/(escrever|painel|admin)\//.test(path)) return;
+  let fonte = "";
+  try { const h = new URL(d.r).hostname.replace(/^www\./, ""); if (!h.endsWith("psicologabrunaribeiro.com")) fonte = h; } catch {}
+  const aparelho = /iPad|Tablet/i.test(ua) ? "tablet" : /Mobi|Android|iPhone/i.test(ua) ? "mobile" : "desktop";
+  const key = "v:" + dia(Date.now());
+  const t = (await env.SENHAS.get(key, "json")) || { v: 0, pv: 0, paginas: {}, paises: {}, origens: {}, aparelhos: {} };
+  t.pv++; bump(t.paginas, path);
+  if (d.n) { t.v++; bump(t.paises, (req.cf && req.cf.country) || "XX"); bump(t.origens, fonte || "-"); bump(t.aparelhos, aparelho); }
+  await env.SENHAS.put(key, JSON.stringify(t), { expirationTtl: 400 * 86400 });
+}
+let paisNome = (c) => c;
+try { const dn = new Intl.DisplayNames(["pt-BR"], { type: "region" }); paisNome = (c) => { try { return dn.of(c) || c; } catch { return c; } }; } catch {}
 async function stats(env, days) {
-  const end = new Date(), start = new Date(end - days * 864e5);
-  const filter = { AND: [{ datetime_geq: start.toISOString(), datetime_leq: end.toISOString() }, { siteTag: SITE_TAG }, { bot: 0 }] };
-  const g = (alias, dim, limit, order) => `${alias}: rumPageloadEventsAdaptiveGroups(filter: $f, limit: ${limit}${order ? `, orderBy: [${order}]` : ""}) { count sum { visits } ${dim ? `dimensions { ${dim} }` : ""} }`;
-  const query = `query($a: string, $f: AccountRumPageloadEventsAdaptiveGroupsFilter_InputObject) { viewer { accounts(filter: { accountTag: $a }) {
-    ${g("total", "", 1)} ${g("dias", "date", 100, "date_ASC")} ${g("paginas", "requestPath", 10, "count_DESC")}
-    ${g("paises", "countryName", 10, "count_DESC")} ${g("origens", "refererHost", 10, "count_DESC")} ${g("aparelhos", "deviceType", 5, "count_DESC")} } } }`;
-  const r = await fetch("https://api.cloudflare.com/client/v4/graphql", {
-    method: "POST", headers: { Authorization: `Bearer ${env.CF_ANALYTICS_TOKEN}`, "Content-Type": "application/json" },
-    body: JSON.stringify({ query, variables: { a: ACCOUNT, f: filter } }),
+  const datas = []; for (let i = days - 1; i >= 0; i--) datas.push(dia(Date.now() - i * 864e5));
+  const tallies = await Promise.all(datas.map((d) => env.SENHAS.get("v:" + d, "json")));
+  const soma = { paginas: {}, paises: {}, origens: {}, aparelhos: {} }; let v = 0, pv = 0;
+  const porDia = datas.map((d, i) => {
+    const t = tallies[i]; if (!t) return { nome: d, visitas: 0, visualizacoes: 0 };
+    v += t.v; pv += t.pv;
+    for (const k of Object.keys(soma)) for (const [n, c] of Object.entries(t[k] || {})) soma[k][n] = (soma[k][n] || 0) + c;
+    return { nome: d, visitas: t.v, visualizacoes: t.pv };
   });
-  const j = await r.json();
-  if (j.errors && j.errors.length) throw new Error(j.errors[0].message);
-  const a = j.data.viewer.accounts[0];
-  const rows = (arr, key) => (arr || []).map((x) => ({ nome: x.dimensions[key] || "", visualizacoes: x.count, visitas: x.sum.visits }));
+  const top = (o, lim, nome = (x) => x) => Object.entries(o).sort((a, b) => b[1] - a[1]).slice(0, lim).map(([n, c]) => ({ nome: nome(n), visualizacoes: c, visitas: c }));
   return {
-    dias: days,
-    total: { visualizacoes: a.total[0]?.count || 0, visitas: a.total[0]?.sum.visits || 0 },
-    porDia: rows(a.dias, "date"), paginas: rows(a.paginas, "requestPath"), paises: rows(a.paises, "countryName"),
-    origens: rows(a.origens, "refererHost"), aparelhos: rows(a.aparelhos, "deviceType"),
+    dias: days, total: { visitas: v, visualizacoes: pv }, porDia,
+    paginas: top(soma.paginas, 10), paises: top(soma.paises, 10, (c) => (c === "XX" ? "Desconhecido" : paisNome(c))),
+    origens: top(soma.origens, 10, (h) => (h === "-" ? "" : h)), aparelhos: top(soma.aparelhos, 5),
   };
 }
 
 export default {
-  async fetch(req, env) {
+  async fetch(req, env, ctx) {
     const origin = req.headers.get("Origin") || "";
     if (req.method === "OPTIONS") return new Response(null, { headers: cors(origin) });
+    if (req.method === "POST" && new URL(req.url).pathname === "/visita") {
+      if (ORIGINS.includes(origin)) ctx.waitUntil(countVisit(req, env).catch(() => {}));
+      return new Response(null, { status: 204, headers: cors(origin) });
+    }
     if (req.method !== "POST") return reply(origin, 405, { ok: false, erro: "Método não permitido." });
 
     let form;

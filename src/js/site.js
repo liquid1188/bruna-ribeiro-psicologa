@@ -28,6 +28,15 @@
   });
   if (read('desktop') === '1') setDesktop(true);
 
+  // Visit counter for Bruna's private stats page (no cookies, nothing personal).
+  try {
+    var api = document.body.getAttribute('data-api');
+    if (api && !document.documentElement.hasAttribute('data-private') && /psicologabrunaribeiro\.com$/.test(location.hostname)) {
+      var nova = !sessionStorage.getItem('v'); sessionStorage.setItem('v', '1');
+      navigator.sendBeacon(api + '/visita', new Blob([JSON.stringify({ p: location.pathname, r: document.referrer, n: nova })], { type: 'text/plain' }));
+    }
+  } catch (e) {}
+
   // Year
   document.querySelectorAll('[data-year]').forEach(function (el) { el.textContent = new Date().getFullYear(); });
 
