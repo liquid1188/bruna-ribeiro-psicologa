@@ -88,7 +88,6 @@ collections:
           - { name: cidade, label: "Cidade (opcional; aparece para o Google)", required: false }
           - { name: instagram, label: Link do Instagram }
           - { name: instagramHandle, label: Usuário do Instagram (sem @) }
-          - { name: ePsi, label: "Link do cadastro e-Psi (opcional)", required: false }
           - { name: web3formsKey, label: "Chave do formulário (Web3Forms)", required: false }
           - { name: url, label: Endereço do site }
           - { name: setupMode, label: "Modo de preparação (esconde do Google)", widget: boolean }
